@@ -13,6 +13,7 @@ import { NgxChartClass } from 'src/app/core/services/ngx-chart';
 })
 export class HomeComponent implements OnInit {
   // input
+  investLoanning: number = 0
   investStarter: number = 0
   investByMounth: number = 50
   investTypeId: string = "0"

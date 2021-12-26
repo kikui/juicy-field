@@ -1,9 +1,9 @@
 <div style="height: 100vh;">
-  <div class="py-4 text-center bg-light">Estimation Juicy Field</div>
+  <div class="py-4 text-center bg-light" #titleRef>Estimation Juicy Field</div>
   <div class="container mt-3">
     <div class="row">
       <mat-form-field  class="col-6">
-        <mat-label>Capital d'investissement de départ (€)</mat-label>
+        <mat-label>Capital d'investissement de départ (€) (hors prêt)</mat-label>
         <input matInput type="number" [min]="0" [(ngModel)]="investStarter"/>
       </mat-form-field>
       <mat-form-field  class="col-6">
@@ -38,7 +38,7 @@
     </div>  
     <div class="my-5 d-flex justify-content-center">
       <ngx-charts-line-chart
-        [view]="[1000, 500]"
+        [view]="[titleRef.offsetWidth, 500]"
         [autoScale]="true"
         [legend]="legend"
         [showXAxisLabel]="showXAxisLabel"
