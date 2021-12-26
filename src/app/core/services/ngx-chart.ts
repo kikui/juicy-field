@@ -1,31 +1,23 @@
-import { DisplayType } from "src/app/feature/home/home.component";
-import { InvestType, investTypeData, PartialReinvest } from "../models/invest-type";
+import { InvestParams, InvestType, investTypeData, PartialReinvest } from "../models/invest-type";
 import { NgxChart, NgxChartSeries } from "../models/ngx-chart";
 import { Mounth, oneYear } from "../models/year";
 
 export class NgxChartClass {
   // variables
-  investStarter: number;
-  investByMounth: number;
-  investTypeId: number;
+  investParams: InvestParams;
   partialReinvest: PartialReinvest;
   // options
   years: Array<Mounth>;
   yearsGeneration: number;
-  displayType: DisplayType;
   ngxArrayData: Array<NgxChart>;
 
-  constructor(yearsGeneration: number, displayType: DisplayType, investByMounth: number, 
-    InvestTypeId: number, partialReinvest: PartialReinvest, investStarter: number) {
+  constructor(yearsGeneration: number, investParams: InvestParams, partialReinvest: PartialReinvest) {
     // options
     this.years = []
     this.yearsGeneration = yearsGeneration
-    this.displayType = displayType
-    this.investStarter = investStarter
+    this.investParams = investParams
 
     // variables
-    this.investByMounth = investByMounth
-    this.investTypeId = InvestTypeId
     this.partialReinvest = partialReinvest
     this.ngxArrayData = [
       {name: "Total investi", series: []},
@@ -37,13 +29,10 @@ export class NgxChartClass {
     this.calculateYear()
   }
 
-  setParams(investByMounth: number, yearsGeneration: number, 
-    investTypeId: number, partialReinvest: PartialReinvest, investStarter: number) {
-    this.investByMounth = investByMounth
+  setParams(yearsGeneration: number, investParams: InvestParams, partialReinvest: PartialReinvest) {
+    this.investParams = investParams
     this.yearsGeneration = yearsGeneration
-    this.investTypeId = investTypeId
     this.partialReinvest = partialReinvest
-    this.investStarter = investStarter
   }
 
   calculateYear(yearsGeneration?: number) {
@@ -60,7 +49,7 @@ export class NgxChartClass {
   recalculate() {
     this.resetData()
     this.calculateYear()
-    this.calculateNgxArrayDataByDisplayType()
+    this.calculateNgxArrayData()
   }
 
   resetData() {
@@ -70,23 +59,8 @@ export class NgxChartClass {
     this.ngxArrayData[3].series = []
   }
 
-  calculateNgxArrayDataByDisplayType() {
-    switch (this.displayType) {
-      case DisplayType.byDay:
-        this.calculateNgxArrayDataByDay()
-        break;
-      case DisplayType.byMouth:
-        this.calculateNgxArrayDataByMounth()
-        break;
-      case DisplayType.byYear:
-        break;
-      default:
-        break;
-    }
-  }
-
-  calculateNgxArrayDataByMounth() {
-    let investTypeTarget = this.getInvestTypeData(this.investTypeId)
+  calculateNgxArrayData() {
+    let investTypeTarget = this.getInvestTypeData(parseInt(this.investParams.investTypeId))
     let currentYear = 1
     let totalInvest = 0
     let totalMySelfInvest = 0
@@ -120,14 +94,23 @@ export class NgxChartClass {
       this.ngxArrayData[2].series.push(currentRent)
       
       let totalReinvest = 0
-      if(index == 0 && this.investStarter > 0) {
-        totalReinvest += this.investStarter
-        totalInvest += this.investStarter
-        totalMySelfInvest += this.investStarter
+      if(index == 0 && (this.investParams.investStarter > 0 || this.investParams.investLoanning)) {
+        totalReinvest += this.investParams.investStarter + this.investParams.investLoanning
+        totalInvest += this.investParams.investStarter + this.investParams.investLoanning
+        totalMySelfInvest += this.investParams.investStarter + this.investParams.investLoanning
+        if(index == this.investParams.loanningTimeRefund) {
+          totalInvest -= this.investParams.investLoanning
+          totalReinvest -= this.investParams.investLoanning
+          totalMySelfInvest -= this.investParams.investLoanning
+        }
       } else {
-        totalReinvest += this.investByMounth + reinvest
+        if(index == this.investParams.loanningTimeRefund) {
+          totalReinvest -= this.investParams.investLoanning
+          totalMySelfInvest -= this.investParams.investLoanning
+        }
+        totalReinvest += this.investParams.investByMounth + reinvest
         totalInvest += totalReinvest
-        totalMySelfInvest += this.investByMounth
+        totalMySelfInvest += this.investParams.investByMounth
       }
 
       // total myslef invest
@@ -190,7 +173,7 @@ export class NgxChartClass {
   calculateNgxArrayDataByDay() {
     let currentYear = 1
     let currentDay = 1
-    let investTypeTarget = this.getInvestTypeData(this.investTypeId)
+    let investTypeTarget = this.getInvestTypeData(parseInt(this.investParams.investTypeId))
 
     if (!investTypeTarget.growingPeriod) {
       investTypeTarget.growingPeriod = this.calculateGrowingPeriod(investTypeTarget)
@@ -223,12 +206,12 @@ export class NgxChartClass {
       this.ngxArrayData[1].series.push(dayRent)
       
       let totalReinvest = 0
-      if(index == 0 && this.investStarter > 0) {
-        totalInvest += this.investStarter
-        totalReinvest += this.investStarter
+      if(index == 0 && this.investParams.investStarter > 0) {
+        totalInvest += this.investParams.investStarter
+        totalReinvest += this.investParams.investStarter
       } else {
-        totalInvest += this.investByMounth + reinvest
-        totalReinvest += this.investByMounth + reinvest
+        totalInvest += this.investParams.investByMounth + reinvest
+        totalReinvest += this.investParams.investByMounth + reinvest
       }
 
       console.log(Math.trunc(totalReinvest / investTypeTarget.price))

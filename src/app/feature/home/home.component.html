@@ -3,28 +3,40 @@
   <div class="container mt-3">
     <div class="row">
       <mat-form-field  class="col-6">
+        <mat-label>Prêt de départ (€)</mat-label>
+        <input matInput type="number" [min]="0" [(ngModel)]="investParams.investLoanning"/>
+      </mat-form-field>
+      <mat-form-field  class="col-6">
+        <mat-label>Temps avant remboursement (en mois)</mat-label>
+        <input matInput type="number" [min]="0" [(ngModel)]="investParams.loanningTimeRefund"/>
+      </mat-form-field>
+      <mat-form-field  class="col-6">
         <mat-label>Capital d'investissement de départ (€) (hors prêt)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="investStarter"/>
+        <input matInput type="number" [min]="0" [(ngModel)]="investParams.investStarter"/>
       </mat-form-field>
       <mat-form-field  class="col-6">
         <mat-label>Investissement par mois (€)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="investByMounth"/>
+        <input matInput type="number" [min]="0" [(ngModel)]="investParams.investByMounth"/>
       </mat-form-field>
       <mat-form-field class="col-6">
         <mat-label>Réinvestissement des gains (%)</mat-label>
         <input matInput type="number" [min]="0" [max]="100" [(ngModel)]="partialReinvest.percent"/>
       </mat-form-field>
       <mat-form-field class="col-6">
-        <mat-label>Plafond max de retrait (€/mois)</mat-label>
+        <mat-label>Temps minimal avant le premier retrait (en mois)</mat-label>
+        <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.minimalTimeBeforeDrop"/>
+      </mat-form-field>
+      <!-- <mat-form-field class="col-6">
+        <mat-label>Fréquence de retrait (en mois)</mat-label>
+        <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.frequency"/>
+      </mat-form-field> -->
+      <mat-form-field class="col-6">
+        <mat-label>Plafond max par retrait (€)</mat-label>
         <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.maxRentDrop"/>
       </mat-form-field>
       <mat-form-field class="col-6">
-        <mat-label>Temps minimal avant le premier retrait (mois)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.minimalTimeBeforeDrop"/>
-      </mat-form-field>
-      <mat-form-field class="col-6">
         <mat-label>Investissement Type</mat-label>
-        <mat-select [(ngModel)]="investTypeId">
+        <mat-select [(ngModel)]="investParams.investTypeId">
           <mat-option *ngFor="let investType of investTypeData" value="{{investType.id}}">{{investType.name}}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -40,6 +52,7 @@
       <ngx-charts-line-chart
         [view]="[titleRef.offsetWidth, 500]"
         [autoScale]="true"
+        [legendPosition]="legendPosition"
         [legend]="legend"
         [showXAxisLabel]="showXAxisLabel"
         [showYAxisLabel]="showYAxisLabel"

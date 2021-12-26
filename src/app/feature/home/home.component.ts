@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { InvestType, PartialReinvest } from 'src/app/core/models/invest-type';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { InvestParams, InvestType, PartialReinvest } from 'src/app/core/models/invest-type';
+import { LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { investTypeData } from '../../core/models/invest-type';
 import { Mounth, oneYear } from 'src/app/core/models/year';
@@ -13,14 +13,20 @@ import { NgxChartClass } from 'src/app/core/services/ngx-chart';
 })
 export class HomeComponent implements OnInit {
   // input
-  investLoanning: number = 0
-  investStarter: number = 0
-  investByMounth: number = 50
-  investTypeId: string = "0"
+  investParams: InvestParams = {
+    investLoanning: 0,
+    loanningTimeRefund: 0,
+    investStarter: 0,
+    investByMounth: 50,
+    investTypeId: "0"
+  }
+
+  
   partialReinvest: PartialReinvest = {
     percent: 100,
     maxRentDrop: 0,
-    minimalTimeBeforeDrop: 0
+    minimalTimeBeforeDrop: 0,
+    frequency: 1
   }
 
   // Enum && Data declaration
@@ -35,6 +41,7 @@ export class HomeComponent implements OnInit {
 
   // ngx-chart options
   legend: boolean = true;
+  legendPosition: LegendPosition = LegendPosition.Below
   showLabels: boolean = true;
   animations: boolean = true;
   xAxis: boolean = true;
@@ -46,35 +53,24 @@ export class HomeComponent implements OnInit {
 
   // calcul option
   yearsGeneration = 1
-  displayType = DisplayType.byMouth
 
   // ngxChartClass
   currentCalcul: any;
 
   constructor() {
-    this.currentCalcul = new NgxChartClass(
-      this.yearsGeneration, this.displayType, this.investByMounth, 
-      parseInt(this.investTypeId), this.partialReinvest, this.investStarter
-    )
+    this.currentCalcul = new NgxChartClass(this.yearsGeneration, this.investParams, this.partialReinvest)
   }
 
   ngOnInit(): void {
-    this.currentCalcul.calculateNgxArrayDataByDisplayType()
+    this.currentCalcul.calculateNgxArrayData()
     this.ngxArrayData = this.currentCalcul.ngxArrayData
   }
 
   recalculate() {
-    this.currentCalcul.setParams(this.investByMounth, this.yearsGeneration, 
-      this.investTypeId, this.partialReinvest, this.investStarter)
+    this.currentCalcul.setParams(this.yearsGeneration, this.investParams, this.partialReinvest)
     this.currentCalcul.recalculate()
     this.ngxArrayData = [...this.currentCalcul.ngxArrayData]
     console.log(this.ngxArrayData)
   }
 
-}
-
-export enum DisplayType {
-  byDay,
-  byMouth,
-  byYear
 }

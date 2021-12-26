@@ -14,6 +14,15 @@ export interface PartialReinvest {
   percent: number;
   maxRentDrop: number;
   minimalTimeBeforeDrop: number;
+  frequency: number
+}
+
+export interface InvestParams {
+  investLoanning: number;
+  loanningTimeRefund: number;
+  investStarter: number;
+  investByMounth: number;
+  investTypeId: string;
 }
 
 export var investTypeData: Array<InvestType> = [
