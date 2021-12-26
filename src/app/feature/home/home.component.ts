@@ -75,4 +75,8 @@ export class HomeComponent implements OnInit {
     console.log(this.ngxArrayData)
   }
 
+  window() : any {
+    return window;
+  }
+
 }
