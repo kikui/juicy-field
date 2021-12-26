@@ -1,0 +1,54 @@
+<div style="height: 100vh;">
+  <div class="py-4 text-center bg-light">Estimation Juicy Field</div>
+  <div class="container mt-3">
+    <div class="row">
+      <mat-form-field  class="col-6">
+        <mat-label>Capital d'investissement de départ (€)</mat-label>
+        <input matInput type="number" [min]="0" [(ngModel)]="investStarter"/>
+      </mat-form-field>
+      <mat-form-field  class="col-6">
+        <mat-label>Investissement par mois (€)</mat-label>
+        <input matInput type="number" [min]="0" [(ngModel)]="investByMounth"/>
+      </mat-form-field>
+      <mat-form-field class="col-6">
+        <mat-label>Réinvestissement des gains (%)</mat-label>
+        <input matInput type="number" [min]="0" [max]="100" [(ngModel)]="partialReinvest.percent"/>
+      </mat-form-field>
+      <mat-form-field class="col-6">
+        <mat-label>Plafond max de retrait (€/mois)</mat-label>
+        <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.maxRentDrop"/>
+      </mat-form-field>
+      <mat-form-field class="col-6">
+        <mat-label>Temps minimal avant le premier retrait (mois)</mat-label>
+        <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.minimalTimeBeforeDrop"/>
+      </mat-form-field>
+      <mat-form-field class="col-6">
+        <mat-label>Investissement Type</mat-label>
+        <mat-select [(ngModel)]="investTypeId">
+          <mat-option *ngFor="let investType of investTypeData" value="{{investType.id}}">{{investType.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field  class="col-6">
+        <mat-label>Nombre d'années</mat-label>
+        <input matInput type="number" [min]="1" [(ngModel)]="yearsGeneration"/>
+      </mat-form-field>
+      <div class="col-12 d-flex align-items-center justify-content-center">
+        <button mat-raised-button color="primary" (click)="recalculate()">Recalculer</button>
+      </div>
+    </div>  
+    <div class="my-5 d-flex justify-content-center">
+      <ngx-charts-line-chart
+        [view]="[1000, 500]"
+        [autoScale]="true"
+        [legend]="legend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxis]="xAxis"
+        [yAxis]="yAxis"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [results]="ngxArrayData">
+      </ngx-charts-line-chart>
+    </div>
+  </div>
+</div>
