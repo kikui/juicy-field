@@ -23,7 +23,8 @@ export class NgxChartClass {
       {name: "Total investi", series: []},
       {name: "Total investi soi meme", series: []},
       {name: "Rentrée courante", series: []},
-      {name: "Bénéfice retiré", series: []}
+      {name: "Bénéfice retiré", series: []},
+      {name: "Bénéfice retiré réel", series: []}
     ]
     
     this.calculateYear()
@@ -57,6 +58,7 @@ export class NgxChartClass {
     this.ngxArrayData[1].series = []
     this.ngxArrayData[2].series = []
     this.ngxArrayData[3].series = []
+    this.ngxArrayData[4].series = []
   }
 
   calculateNgxArrayData() {
@@ -85,6 +87,13 @@ export class NgxChartClass {
         value: gain,
       }
       this.ngxArrayData[3].series.push(benefice)
+
+      // real benefit
+      let realBenefice: NgxChartSeries = {
+        name: currentYear + mounth.name,
+        value: gain * 0.7,
+      }
+      this.ngxArrayData[4].series.push(realBenefice)
 
       // current rent
       let currentRent: NgxChartSeries = {
