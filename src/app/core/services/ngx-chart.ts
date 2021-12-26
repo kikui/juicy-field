@@ -136,7 +136,7 @@ export class NgxChartClass {
   calculateRent(index: number, investTypeTarget: InvestType, nbPlantToRentWithMounth: number, targetMounthIndex: number) {
     let reinvest = this.ngxArrayData[0].series[targetMounthIndex].meta?.resteInvest || 0
     let gain = 0
-    if (index+1 >= this.partialReinvest.minimalTimeBeforeDrop) {
+    if (index+1 > this.partialReinvest.minimalTimeBeforeDrop && index % this.partialReinvest.frequency == 0) {
       let potentialGain = nbPlantToRentWithMounth * investTypeTarget.revenue.minimal * ((100 - this.partialReinvest.percent) / 100)
       gain = potentialGain > this.partialReinvest.maxRentDrop && this.partialReinvest.maxRentDrop != 0 ? this.partialReinvest.maxRentDrop : potentialGain
       reinvest = nbPlantToRentWithMounth * investTypeTarget.revenue.minimal * (this.partialReinvest.percent / 100) + potentialGain - gain

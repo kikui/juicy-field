@@ -26,12 +26,12 @@
         <mat-label>Temps minimal avant le premier retrait (en mois)</mat-label>
         <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.minimalTimeBeforeDrop"/>
       </mat-form-field>
-      <!-- <mat-form-field class="col-6">
-        <mat-label>Fréquence de retrait (en mois)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.frequency"/>
-      </mat-form-field> -->
       <mat-form-field class="col-6">
-        <mat-label>Plafond max par retrait (€)</mat-label>
+        <mat-label>Fréquence de retrait (en mois)</mat-label>
+        <input matInput type="number" [min]="1" [(ngModel)]="partialReinvest.frequency"/>
+      </mat-form-field>
+      <mat-form-field class="col-6">
+        <mat-label>Plafond max par retrait (€) (0 = pas de plafond)</mat-label>
         <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.maxRentDrop"/>
       </mat-form-field>
       <mat-form-field class="col-6">
