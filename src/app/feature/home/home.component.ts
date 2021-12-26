@@ -20,14 +20,13 @@ export class HomeComponent implements OnInit {
     investByMounth: 50,
     investTypeId: "0"
   }
-
-  
   partialReinvest: PartialReinvest = {
     percent: 100,
     maxRentDrop: 0,
     minimalTimeBeforeDrop: 0,
     frequency: 1
   }
+  displayTotalInvest: boolean = true
 
   // Enum && Data declaration
   investTypeData = investTypeData
@@ -69,6 +68,9 @@ export class HomeComponent implements OnInit {
   recalculate() {
     this.currentCalcul.setParams(this.yearsGeneration, this.investParams, this.partialReinvest)
     this.currentCalcul.recalculate()
+    if(!this.displayTotalInvest) {
+      this.currentCalcul.ngxArrayDataWithoutTotalInvest()
+    } 
     this.ngxArrayData = [...this.currentCalcul.ngxArrayData]
     console.log(this.ngxArrayData)
   }

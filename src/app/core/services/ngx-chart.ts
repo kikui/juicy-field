@@ -112,6 +112,7 @@ export class NgxChartClass {
         totalInvest += totalReinvest
         totalMySelfInvest += this.investParams.investByMounth
       }
+      totalInvest -= gain
 
       // total myslef invest
       let daySpentMySelf: NgxChartSeries = {
@@ -131,6 +132,10 @@ export class NgxChartClass {
       }
       this.ngxArrayData[0].series.push(daySpent)
     })
+  }
+
+  getInvestTypeData(id: number): InvestType {
+    return investTypeData.find((e: InvestType) => e.id == id )!
   }
 
   calculateRent(index: number, investTypeTarget: InvestType, nbPlantToRentWithMounth: number, targetMounthIndex: number) {
@@ -170,7 +175,11 @@ export class NgxChartClass {
     return indexTarget
   }
 
-  calculateNgxArrayDataByDay() {
+  ngxArrayDataWithoutTotalInvest() {
+    this.ngxArrayData[0].series = []
+  }
+
+/*   calculateNgxArrayDataByDay() {
     let currentYear = 1
     let currentDay = 1
     let investTypeTarget = this.getInvestTypeData(parseInt(this.investParams.investTypeId))
@@ -242,12 +251,8 @@ export class NgxChartClass {
     return targetIndexMounth!
   }
 
-  getInvestTypeData(id: number): InvestType {
-    return investTypeData.find((e: InvestType) => e.id == id )!
-  }
-
   calculateGrowingPeriod(investTypeTarget: InvestType): number  {
     return 365 / investTypeTarget.harvestPerYear
-  }
+  } */
 
 }
