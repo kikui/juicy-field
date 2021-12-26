@@ -179,7 +179,7 @@ export class NgxChartClass {
     let indexTarget = 0
     oneYear.forEach((mounth, index) => {
       if (count > growingPeriod && isFind == false) {
-        indexTarget = index
+        indexTarget = index - 1
         isFind = true
       }
       count += mounth.nbDay
