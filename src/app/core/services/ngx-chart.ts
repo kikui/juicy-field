@@ -1,5 +1,5 @@
 import { InvestParams, InvestType, investTypeData, PartialReinvest } from "../models/invest-type";
-import { NgxChart, NgxChartSeries } from "../models/ngx-chart";
+import { GrowingPlant, NgxChart, NgxChartSeries } from "../models/ngx-chart";
 import { Mounth, oneYear } from "../models/year";
 
 export class NgxChartClass {
@@ -103,7 +103,7 @@ export class NgxChartClass {
       this.ngxArrayData[2].series.push(currentRent)
       
       let totalReinvest = 0
-      if(index == 0 && (this.investParams.investStarter > 0 || this.investParams.investLoanning)) {
+      if(index == 0 && (this.investParams.investStarter > 0 || this.investParams.investLoanning > 0)) {
         totalReinvest += this.investParams.investStarter + this.investParams.investLoanning
         totalInvest += this.investParams.investStarter + this.investParams.investLoanning
         totalMySelfInvest += this.investParams.investStarter + this.investParams.investLoanning
@@ -121,6 +121,9 @@ export class NgxChartClass {
         totalInvest += totalReinvest
         totalMySelfInvest += this.investParams.investByMounth
       }
+      if (index > 0) {
+        totalReinvest += this.ngxArrayData[0].series[index-1].meta?.resteInvest || 0
+      }
       totalInvest -= gain
 
       // total myslef invest
@@ -130,17 +133,46 @@ export class NgxChartClass {
       }
       this.ngxArrayData[1].series.push(daySpentMySelf)
 
+      // calculate repot && age
+      let growingPlantHistory: Array<GrowingPlant> = this.ngxArrayData[0].series[targetMounthIndex]?.meta?.growingPlantHistory || []
+      let nbRepotPlant = this.repotCalcul(investTypeTarget, growingPlantHistory)
+
+      // feed growingPlant
+      let nbPlantPaid = Math.trunc(totalReinvest / investTypeTarget.price)
+      let totalNbPlantPaid = nbPlantPaid + nbRepotPlant
+      let resteInvest = totalReinvest - investTypeTarget.price * nbPlantPaid
+      if (nbPlantPaid > 0) growingPlantHistory.push({nbPlant: nbPlantPaid, age: 0})
+
       // total invest
       let daySpent: NgxChartSeries = {
         name: currentYear + mounth.name,
         value: totalInvest,
         meta: {
-          nbPlantPaid: Math.trunc(totalReinvest / investTypeTarget.price), 
-          resteInvest: totalReinvest - investTypeTarget.price * Math.trunc(totalReinvest / investTypeTarget.price)
+          nbPlantPaid: totalNbPlantPaid, 
+          growingPlantHistory: growingPlantHistory,
+          resteInvest: resteInvest
         }
       }
       this.ngxArrayData[0].series.push(daySpent)
     })
+  }
+
+  repotCalcul(investTypeTarget: InvestType, growingPlantHistory: Array<GrowingPlant>): number {
+    let nbRepotPlant = 0
+    growingPlantHistory.forEach((e: GrowingPlant, index) => {
+      if (investTypeTarget.harvestPerYear > 0) growingPlantHistory[index].age += (12 / investTypeTarget.harvestPerYear)
+      if (this.itsTimeToRepot(investTypeTarget, e.age)) nbRepotPlant += e.nbPlant
+    })
+    return nbRepotPlant
+  }
+
+  itsTimeToRepot(investTypeTarget: InvestType, currentAge: number): boolean {
+    let maxMounthReplot = investTypeTarget.businessPlan * 12
+    if(currentAge < maxMounthReplot && currentAge % (12 / investTypeTarget.harvestPerYear) == 0 && currentAge != 0) {
+      return true
+    } else {
+      return false
+    }
   }
 
   getInvestTypeData(id: number): InvestType {
@@ -148,7 +180,7 @@ export class NgxChartClass {
   }
 
   calculateRent(index: number, investTypeTarget: InvestType, nbPlantToRentWithMounth: number, targetMounthIndex: number) {
-    let reinvest = this.ngxArrayData[0].series[targetMounthIndex].meta?.resteInvest || 0
+    let reinvest = 0
     let gain = 0
     if (index+1 > this.partialReinvest.minimalTimeBeforeDrop && index % this.partialReinvest.frequency == 0) {
       let potentialGain = nbPlantToRentWithMounth * investTypeTarget.revenue.minimal * ((100 - this.partialReinvest.percent) / 100)
@@ -187,81 +219,5 @@ export class NgxChartClass {
   ngxArrayDataWithoutTotalInvest() {
     this.ngxArrayData[0].series = []
   }
-
-/*   calculateNgxArrayDataByDay() {
-    let currentYear = 1
-    let currentDay = 1
-    let investTypeTarget = this.getInvestTypeData(parseInt(this.investParams.investTypeId))
-
-    if (!investTypeTarget.growingPeriod) {
-      investTypeTarget.growingPeriod = this.calculateGrowingPeriod(investTypeTarget)
-    }
-    let totalInvest = 0
-    let totalRent = 0
-
-    this.years.forEach((mounth: Mounth, index: number) =>  {
-      let reinvest = 0
-      let nbPlantToRentWithMounth = 0
-      if ((index+1) % 13 == 0) currentYear++
-      
-      for(let i = 0; i < mounth.nbDay; i++) {
-        let indexRent = currentDay - investTypeTarget.growingPeriod!
-        let targetIndexMounthRent = this.getIndexMounthToRent(indexRent)
-        
-        nbPlantToRentWithMounth = this.ngxArrayData[0].series[targetIndexMounthRent]?.meta?.nbPlantPaid || 0
-        reinvest = this.ngxArrayData[0].series[targetIndexMounthRent]?.meta?.resteInvest || 0
-        reinvest += nbPlantToRentWithMounth * investTypeTarget.revenue.minimal
-        
-        currentDay++
-      }
-      
-      console.log("final mounth nbPlantToRen", nbPlantToRentWithMounth)
-      totalRent += nbPlantToRentWithMounth * investTypeTarget.revenue.minimal
-      let dayRent: NgxChartSeries = {
-        name: currentYear + mounth.name,
-        value: totalRent,
-      }
-      this.ngxArrayData[1].series.push(dayRent)
-      
-      let totalReinvest = 0
-      if(index == 0 && this.investParams.investStarter > 0) {
-        totalInvest += this.investParams.investStarter
-        totalReinvest += this.investParams.investStarter
-      } else {
-        totalInvest += this.investParams.investByMounth + reinvest
-        totalReinvest += this.investParams.investByMounth + reinvest
-      }
-
-      console.log(Math.trunc(totalReinvest / investTypeTarget.price))
-      let daySpent: NgxChartSeries = {
-        name: currentYear + mounth.name,
-        value: totalInvest,
-        meta: {
-          nbPlantPaid: Math.trunc(totalReinvest / investTypeTarget.price), 
-          resteInvest: totalReinvest - investTypeTarget.price * Math.trunc(totalReinvest / investTypeTarget.price)
-        }
-      }
-      this.ngxArrayData[0].series.push(daySpent)
-    })
-  }
-
-  getIndexMounthToRent(indexRent: number): number {
-    let currentDay = 0
-    let targetIndexMounth: number
-    this.years.forEach((mounth: Mounth, index: number) =>  {
-      for (let i = 0; i < mounth.nbDay; i++) {
-        if(currentDay == indexRent) {
-          targetIndexMounth = index
-          console.log(mounth.name)
-        } 
-        currentDay++;
-      }
-    })
-    return targetIndexMounth!
-  }
-
-  calculateGrowingPeriod(investTypeTarget: InvestType): number  {
-    return 365 / investTypeTarget.harvestPerYear
-  } */
 
 }

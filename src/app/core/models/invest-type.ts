@@ -30,8 +30,8 @@ export var investTypeData: Array<InvestType> = [
     id: 0,
     name: "JuicyFlash",
     growingPeriod: 108,
-    harvestPerYear: 1,
-    businessPlan: 1,
+    harvestPerYear: 0,
+    businessPlan: 0,
     price: 50,
     revenue: {minimal: 68, maximal: 83}
   },

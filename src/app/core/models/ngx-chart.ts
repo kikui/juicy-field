@@ -12,5 +12,11 @@ export interface NgxChartSeries {
 export interface NgxChartMeta {
   nbPlantPaid?: number;
   resteInvest?: number;
+  growingPlantHistory?: Array<GrowingPlant>;
   gain?: number
+}
+
+export interface GrowingPlant {
+  nbPlant: number;
+  age: number;
 }
