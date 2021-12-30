@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
   displayPanel: DisplayPanel = {
     totalInvest: true,
     realBenefit: false,
-    currentPlantPaid: false,
+    currentPlantPaid: true,
     totalPlantInGrowing: false
   }
 

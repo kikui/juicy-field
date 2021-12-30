@@ -93,21 +93,21 @@ export class NgxChartClass {
       
       // benefit
       let ngxDataTypeBenefit: NgxChartSeries = {
-        name: currentYear + mounth.name,
+        name: `${currentYear}${mounth.name} (${index+1})`,
         value: gain,
       }
       this.ngxArrayData[NgxDataType.benefit].series.push(ngxDataTypeBenefit)
 
       // real benefit
       let ngxDataTypeRealBenefit: NgxChartSeries = {
-        name: currentYear + mounth.name,
+        name: `${currentYear}${mounth.name} (${index+1})`,
         value: gain * 0.7,
       }
       this.ngxArrayData[NgxDataType.realBenefit].series.push(ngxDataTypeRealBenefit)
 
       // current rent
       let ngxDataTypeCurrentRent: NgxChartSeries = {
-        name: currentYear + mounth.name,
+        name: `${currentYear}${mounth.name} (${index+1})`,
         value: reinvest,
       }
       this.ngxArrayData[NgxDataType.currentRent].series.push(ngxDataTypeCurrentRent)
@@ -138,7 +138,7 @@ export class NgxChartClass {
 
       // total myslef invest
       let ngxDataTypeTotalSelfInvest: NgxChartSeries = {
-        name: currentYear + mounth.name,
+        name: `${currentYear}${mounth.name} (${index+1})`,
         value: totalMySelfInvest,
       }
       this.ngxArrayData[NgxDataType.totalSelfInvest].series.push(ngxDataTypeTotalSelfInvest)
@@ -155,7 +155,7 @@ export class NgxChartClass {
 
       // total invest
       let ngxDataTypeTotalInvest: NgxChartSeries = {
-        name: currentYear + mounth.name,
+        name: `${currentYear}${mounth.name} (${index+1})`,
         value: totalInvest,
         meta: {
           nbPlantPaid: totalNbPlantPaid, 
@@ -167,7 +167,7 @@ export class NgxChartClass {
 
       // currentPlantPaid
       let ngxDataTypeCurrentPlantPaid: NgxChartSeries = {
-        name: currentYear + mounth.name,
+        name: `${currentYear}${mounth.name} (${index+1})`,
         value: totalNbPlantPaid,
       }
       this.ngxArrayData[NgxDataType.currentPlantPaid].series.push(ngxDataTypeCurrentPlantPaid)

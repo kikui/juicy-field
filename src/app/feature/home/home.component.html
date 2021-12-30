@@ -1,7 +1,8 @@
 <div style="height: 100vh;">
-  <div class="py-4 text-center bg-light" #titleRef>Estimation Juicy Field</div>
+  <div class="py-4 text-center bg-light text-uppercase fw-bold" #titleRef>Estimation Juicy Field</div>
   <div class="container mt-3">
     <div class="row">
+      <div class="col-12 mb-3"><span class="primary border-bottom border-secondary pb-1 pe-1">Paramètres d'investissement</span></div>
       <mat-form-field  class="col-6">
         <mat-label>Prêt de départ (€)</mat-label>
         <input matInput type="number" [min]="0" [(ngModel)]="investParams.investLoanning"/>
@@ -18,6 +19,9 @@
         <mat-label>Investissement par mois (€)</mat-label>
         <input matInput type="number" [min]="0" [(ngModel)]="investParams.investByMounth"/>
       </mat-form-field>
+
+      <div class="col-12 my-3 text-end"><span class="primary border-bottom border-secondary pb-1 ps-1">Paramètres de réinvestissement</span></div>
+
       <mat-form-field class="col-6">
         <mat-label>Réinvestissement des gains (%)</mat-label>
         <input matInput type="number" [min]="0" [max]="100" [(ngModel)]="partialReinvest.percent"/>
@@ -34,6 +38,9 @@
         <mat-label>Plafond max par retrait (€) (0 = pas de plafond)</mat-label>
         <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.maxRentDrop"/>
       </mat-form-field>
+
+      <div class="col-12 my-3"><span class="primary border-bottom border-secondary pb-1 pe-1">Paramètres globeaux</span></div>
+
       <mat-form-field class="col-6">
         <mat-label>Investissement Type</mat-label>
         <mat-select [(ngModel)]="investParams.investTypeId">
@@ -44,7 +51,9 @@
         <mat-label>Nombre d'années</mat-label>
         <input matInput type="number" [min]="1" [(ngModel)]="yearsGeneration"/>
       </mat-form-field>
-      <div class="col-12 text-center">Affichage</div>
+
+      <div class="col-12 text-center my-3"><span class="primary border-bottom border-secondary pb-1 px-1">Filtres</span></div>
+
       <mat-checkbox class="col-6 text-center" style="height: 40px;" [(ngModel)]="displayPanel.totalInvest">Total investi</mat-checkbox>
       <mat-checkbox class="col-6 text-center" style="height: 40px;" [(ngModel)]="displayPanel.totalPlantInGrowing">Plante total en croissance (Not yet implemented)</mat-checkbox>
       <mat-checkbox class="col-6 text-center" style="height: 40px;" [(ngModel)]="displayPanel.realBenefit">Bénéfice réel</mat-checkbox>
