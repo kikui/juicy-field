@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "juicy-field": {
+      "hosting": {
+        "juicy-field": [
+          "juicy-field"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "juicy-field"
+  }
+}

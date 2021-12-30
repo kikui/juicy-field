@@ -4,15 +4,23 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './feature/home/home.component';
+import { EstimateComponent } from './feature/estimate/estimate.component';
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { ProfilesComponent } from './feature/profiles/profiles.component';
+import { ProfilesDetailComponent } from './feature/profiles/detail/detail.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    EstimateComponent,
+    ProfilesComponent,
+    ProfilesDetailComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +28,16 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MaterialModule,
     FormsModule,
     BrowserAnimationsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    provideFirebaseApp(() => initializeApp({
+      apiKey: "AIzaSyAi-jb9u_JJKkvTRQUi0KdGTMCl0KHor_A",
+      authDomain: "juicy-field.firebaseapp.com",
+      projectId: "juicy-field",
+      storageBucket: "juicy-field.appspot.com",
+      messagingSenderId: "1047884244545",
+      appId: "1:1047884244545:web:85c75921407fa1f4b148c0"
+    })),
+    provideFirestore(() => getFirestore()),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -107,6 +107,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "juicy-field:build:production",
+            "firebaseProject": "juicy-field",
+            "firebaseHostingSite": "juicy-field"
+          }
         }
       }
     }

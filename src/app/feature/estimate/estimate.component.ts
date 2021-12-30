@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import { DisplayPanel, InvestParams, PartialReinvest } from 'src/app/core/models/invest-type';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
@@ -7,18 +7,19 @@ import { oneYear } from 'src/app/core/models/year';
 import { NgxChartClass } from 'src/app/core/services/ngx-chart';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-estimate',
+  templateUrl: './estimate.component.html',
+  styleUrls: ['./estimate.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class EstimateComponent implements OnInit {
   // input
   investParams: InvestParams = {
     investLoanning: 0,
     loanningTimeRefund: 0,
     investStarter: 0,
     investByMounth: 50,
-    investTypeId: "0"
+    investTypeId: "0",
+    ponctualInvest: ""
   }
   partialReinvest: PartialReinvest = {
     percent: 100,
@@ -51,6 +52,11 @@ export class HomeComponent implements OnInit {
   showXAxisLabel: boolean = true;
   xAxisLabel: string = 'Temps';
   yAxisLabel: string = 'Argent (€)';
+  xWidth: number = 500
+
+  setXWidth(event: any) {
+    this.xWidth = event.nativeElement.offsetWidth || 500
+  }
 
   // calcul option
   yearsGeneration = 1
