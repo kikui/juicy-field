@@ -38,10 +38,7 @@ export class HomeComponent implements OnInit {
   oneYear = oneYear
 
   // ngx-chart data default
-  ngxArrayData: Array<NgxChart> = [
-    {name: "Dépenses", series: [{name: "default", value: 0}]},
-    {name: "Rentrées", series: [{name: "default", value: 0}]}
-  ]
+  ngxArrayData: Array<NgxChart> = []
 
   // ngx-chart options
   legend: boolean = true;
@@ -67,6 +64,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentCalcul.calculateNgxArrayData()
+    this.currentCalcul.applyFilter()
     this.ngxArrayData = this.currentCalcul.ngxArrayData
   }
 
