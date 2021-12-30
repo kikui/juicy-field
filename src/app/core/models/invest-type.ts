@@ -25,6 +25,13 @@ export interface InvestParams {
   investTypeId: string;
 }
 
+export interface DisplayPanel {
+  totalInvest: boolean;
+  realBenefit: boolean;
+  currentPlantPaid: boolean;
+  totalPlantInGrowing: boolean;
+}
+
 export var investTypeData: Array<InvestType> = [
   { 
     id: 0,

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { InvestParams, InvestType, PartialReinvest } from 'src/app/core/models/invest-type';
-import { LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
+import { DisplayPanel, InvestParams, PartialReinvest } from 'src/app/core/models/invest-type';
+import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { investTypeData } from '../../core/models/invest-type';
-import { Mounth, oneYear } from 'src/app/core/models/year';
+import { oneYear } from 'src/app/core/models/year';
 import { NgxChartClass } from 'src/app/core/services/ngx-chart';
 
 @Component({
@@ -26,7 +26,12 @@ export class HomeComponent implements OnInit {
     minimalTimeBeforeDrop: 0,
     frequency: 1
   }
-  displayTotalInvest: boolean = true
+  displayPanel: DisplayPanel = {
+    totalInvest: true,
+    realBenefit: false,
+    currentPlantPaid: false,
+    totalPlantInGrowing: false
+  }
 
   // Enum && Data declaration
   investTypeData = investTypeData
@@ -57,7 +62,7 @@ export class HomeComponent implements OnInit {
   currentCalcul: any;
 
   constructor() {
-    this.currentCalcul = new NgxChartClass(this.yearsGeneration, this.investParams, this.partialReinvest)
+    this.currentCalcul = new NgxChartClass(this.yearsGeneration, this.investParams, this.partialReinvest, this.displayPanel)
   }
 
   ngOnInit(): void {
@@ -66,11 +71,9 @@ export class HomeComponent implements OnInit {
   }
 
   recalculate() {
-    this.currentCalcul.setParams(this.yearsGeneration, this.investParams, this.partialReinvest)
+    this.currentCalcul.setParams(this.yearsGeneration, this.investParams, this.partialReinvest, this.displayPanel)
     this.currentCalcul.recalculate()
-    if(!this.displayTotalInvest) {
-      this.currentCalcul.ngxArrayDataWithoutTotalInvest()
-    } 
+    this.currentCalcul.applyFilter()
     this.ngxArrayData = [...this.currentCalcul.ngxArrayData]
     console.log(this.ngxArrayData)
   }

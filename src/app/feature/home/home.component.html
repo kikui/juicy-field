@@ -44,7 +44,11 @@
         <mat-label>Nombre d'années</mat-label>
         <input matInput type="number" [min]="1" [(ngModel)]="yearsGeneration"/>
       </mat-form-field>
-      <mat-checkbox class="col-12 text-center" style="height: 40px;" [(ngModel)]="displayTotalInvest">Afficher le total investi</mat-checkbox>
+      <div class="col-12 text-center">Affichage</div>
+      <mat-checkbox class="col-6 text-center" style="height: 40px;" [(ngModel)]="displayPanel.totalInvest">Total investi</mat-checkbox>
+      <mat-checkbox class="col-6 text-center" style="height: 40px;" [(ngModel)]="displayPanel.totalPlantInGrowing">Plante total en croissance (Not yet implemented)</mat-checkbox>
+      <mat-checkbox class="col-6 text-center" style="height: 40px;" [(ngModel)]="displayPanel.realBenefit">Bénéfice réel</mat-checkbox>
+      <mat-checkbox class="col-6 text-center" style="height: 40px;" [(ngModel)]="displayPanel.currentPlantPaid">Plante payé</mat-checkbox>
       <div class="col-12 d-flex align-items-center justify-content-center">
         <button mat-raised-button color="primary" (click)="recalculate()">Recalculer</button>
       </div>

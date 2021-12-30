@@ -1,30 +1,35 @@
-import { InvestParams, InvestType, investTypeData, PartialReinvest } from "../models/invest-type";
-import { GrowingPlant, NgxChart, NgxChartSeries } from "../models/ngx-chart";
+import { DisplayPanel, InvestParams, InvestType, investTypeData, PartialReinvest } from "../models/invest-type";
+import { GrowingPlant, NgxChart, NgxChartSeries, NgxDataType } from "../models/ngx-chart";
 import { Mounth, oneYear } from "../models/year";
 
 export class NgxChartClass {
   // variables
   investParams: InvestParams;
   partialReinvest: PartialReinvest;
+  displayPanel: DisplayPanel;
+
   // options
   years: Array<Mounth>;
   yearsGeneration: number;
   ngxArrayData: Array<NgxChart>;
 
-  constructor(yearsGeneration: number, investParams: InvestParams, partialReinvest: PartialReinvest) {
+  constructor(yearsGeneration: number, investParams: InvestParams, partialReinvest: PartialReinvest, displayPanel: DisplayPanel) {
     // options
     this.years = []
     this.yearsGeneration = yearsGeneration
-    this.investParams = investParams
-
+    this.displayPanel = displayPanel
+    
     // variables
+    this.investParams = investParams
     this.partialReinvest = partialReinvest
     this.ngxArrayData = [
       {name: "Total investi", series: []},
       {name: "Total investi soi meme", series: []},
       {name: "Rentrée courante", series: []},
       {name: "Bénéfice retiré", series: []},
-      {name: "Bénéfice retiré réel", series: []}
+      {name: "Bénéfice réel", series: []},
+      {name: "Plante courante payé", series: []},
+      {name: "Total plante en croissance", series: []},
     ]
     
     this.calculateYear()
@@ -54,11 +59,16 @@ export class NgxChartClass {
   }
 
   resetData() {
-    this.ngxArrayData[0].series = []
-    this.ngxArrayData[1].series = []
-    this.ngxArrayData[2].series = []
-    this.ngxArrayData[3].series = []
-    this.ngxArrayData[4].series = []
+    this.ngxArrayData.forEach((e) => {
+      e.series = []
+    })
+  }
+
+  applyFilter() {
+    if(!this.displayPanel.totalInvest) this.ngxArrayData[NgxDataType.totalInvest].series = []
+    if(!this.displayPanel.realBenefit) this.ngxArrayData[NgxDataType.realBenefit].series = []
+    if(!this.displayPanel.currentPlantPaid) this.ngxArrayData[NgxDataType.currentPlantPaid].series = []
+    if(!this.displayPanel.totalPlantInGrowing) this.ngxArrayData[NgxDataType.totalPlantInGrowing].series = []
   }
 
   calculateNgxArrayData() {
@@ -82,25 +92,25 @@ export class NgxChartClass {
       }
       
       // benefit
-      let benefice: NgxChartSeries = {
+      let ngxDataTypeBenefit: NgxChartSeries = {
         name: currentYear + mounth.name,
         value: gain,
       }
-      this.ngxArrayData[3].series.push(benefice)
+      this.ngxArrayData[NgxDataType.benefit].series.push(ngxDataTypeBenefit)
 
       // real benefit
-      let realBenefice: NgxChartSeries = {
+      let ngxDataTypeRealBenefit: NgxChartSeries = {
         name: currentYear + mounth.name,
         value: gain * 0.7,
       }
-      this.ngxArrayData[4].series.push(realBenefice)
+      this.ngxArrayData[NgxDataType.realBenefit].series.push(ngxDataTypeRealBenefit)
 
       // current rent
-      let currentRent: NgxChartSeries = {
+      let ngxDataTypeCurrentRent: NgxChartSeries = {
         name: currentYear + mounth.name,
         value: reinvest,
       }
-      this.ngxArrayData[2].series.push(currentRent)
+      this.ngxArrayData[NgxDataType.currentRent].series.push(ngxDataTypeCurrentRent)
       
       let totalReinvest = 0
       if(index == 0 && (this.investParams.investStarter > 0 || this.investParams.investLoanning > 0)) {
@@ -127,11 +137,11 @@ export class NgxChartClass {
       totalInvest -= gain
 
       // total myslef invest
-      let daySpentMySelf: NgxChartSeries = {
+      let ngxDataTypeTotalSelfInvest: NgxChartSeries = {
         name: currentYear + mounth.name,
         value: totalMySelfInvest,
       }
-      this.ngxArrayData[1].series.push(daySpentMySelf)
+      this.ngxArrayData[NgxDataType.totalSelfInvest].series.push(ngxDataTypeTotalSelfInvest)
 
       // calculate repot && age
       let growingPlantHistory: Array<GrowingPlant> = this.ngxArrayData[0].series[targetMounthIndex]?.meta?.growingPlantHistory || []
@@ -144,7 +154,7 @@ export class NgxChartClass {
       if (nbPlantPaid > 0) growingPlantHistory.push({nbPlant: nbPlantPaid, age: 0})
 
       // total invest
-      let daySpent: NgxChartSeries = {
+      let ngxDataTypeTotalInvest: NgxChartSeries = {
         name: currentYear + mounth.name,
         value: totalInvest,
         meta: {
@@ -153,7 +163,14 @@ export class NgxChartClass {
           resteInvest: resteInvest
         }
       }
-      this.ngxArrayData[0].series.push(daySpent)
+      this.ngxArrayData[NgxDataType.totalInvest].series.push(ngxDataTypeTotalInvest)
+
+      // currentPlantPaid
+      let ngxDataTypeCurrentPlantPaid: NgxChartSeries = {
+        name: currentYear + mounth.name,
+        value: totalNbPlantPaid,
+      }
+      this.ngxArrayData[NgxDataType.currentPlantPaid].series.push(ngxDataTypeCurrentPlantPaid)
     })
   }
 
@@ -214,10 +231,6 @@ export class NgxChartClass {
       count += mounth.nbDay
     })
     return indexTarget
-  }
-
-  ngxArrayDataWithoutTotalInvest() {
-    this.ngxArrayData[0].series = []
   }
 
 }

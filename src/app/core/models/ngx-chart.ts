@@ -20,3 +20,13 @@ export interface GrowingPlant {
   nbPlant: number;
   age: number;
 }
+
+export enum NgxDataType {
+  totalInvest,
+  totalSelfInvest,
+  currentRent,
+  benefit,
+  realBenefit,
+  currentPlantPaid,
+  totalPlantInGrowing
+}
