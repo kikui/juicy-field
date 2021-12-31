@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import { Firestore, collectionData, collection } from '@angular/fire/firestore';
-import { DocumentData } from 'rxfire/firestore/interfaces';
-import { Observable } from 'rxjs';
+import { DocumentData } from '@firebase/firestore';
 import { Profile } from 'src/app/core/models/profile';
+import { FirestoreService } from 'src/app/core/services/firestore.service';
 
 @Component({
   selector: 'app-profiles',
@@ -10,15 +9,16 @@ import { Profile } from 'src/app/core/models/profile';
   styleUrls: ['./profiles.component.scss']
 })
 export class ProfilesComponent implements OnInit {
-  profiles: Observable<Array<Profile | DocumentData>>
+  profiles: Array<Profile | DocumentData> = []
 
-  constructor(firestore: Firestore) {
-    const profilesCollection = collection(firestore, 'profiles');
-    this.profiles = collectionData(profilesCollection);
-    console.log(this.profiles)
+  constructor(public firestoreService: FirestoreService ) {
+    
   }
 
   ngOnInit(): void {
+    this.firestoreService.profiles.subscribe((profilesData) => {
+      this.profiles = profilesData
+    })
   }
 
 }

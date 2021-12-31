@@ -13,6 +13,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { ProfilesComponent } from './feature/profiles/profiles.component';
 import { ProfilesDetailComponent } from './feature/profiles/detail/detail.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProfilesCreateComponent } from './feature/profiles/create/create.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     EstimateComponent,
     ProfilesComponent,
     ProfilesDetailComponent,
-    NavbarComponent
+    NavbarComponent,
+    ProfilesCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +41,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
       appId: "1:1047884244545:web:85c75921407fa1f4b148c0"
     })),
     provideFirestore(() => getFirestore()),
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
