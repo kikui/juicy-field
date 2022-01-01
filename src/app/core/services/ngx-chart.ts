@@ -72,6 +72,10 @@ export class NgxChartClass {
     if(!this.displayPanel.totalPlantInGrowing) this.ngxArrayData[NgxDataType.totalPlantInGrowing].series = []
     if(!this.displayPanel.currentRent) this.ngxArrayData[NgxDataType.currentRent].series = []
     if(!this.displayPanel.totalSelfInvest) this.ngxArrayData[NgxDataType.totalSelfInvest].series = []
+    if(this.partialReinvest.percent == 100) {
+      this.ngxArrayData[NgxDataType.benefit].series = []
+      this.ngxArrayData[NgxDataType.realBenefit].series = []
+    }
   }
 
   calculateNgxArrayData() {
@@ -145,7 +149,7 @@ export class NgxChartClass {
         value: totalInvest,
         meta: {
           nbPlantPaid: totalNbPlantPaid, 
-          growingPlantHistory: growingPlantHistory,
+          growingPlantHistory: [...growingPlantHistory],
           resteInvest: resteInvest
         }
       }
