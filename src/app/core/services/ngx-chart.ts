@@ -80,6 +80,7 @@ export class NgxChartClass {
 
   calculateNgxArrayData() {
     let investTypeTarget = this.getInvestTypeData(parseInt(this.investParams.investTypeId))
+    let growingPlantHistory: Array<GrowingPlant> = []
     let currentYear = 1
     let totalInvest = 0
     let totalMySelfInvest = 0
@@ -134,14 +135,23 @@ export class NgxChartClass {
       this.ngxArrayData[NgxDataType.totalSelfInvest].series.push(ngxDataTypeTotalSelfInvest)
 
       // calculate repot && age
-      let growingPlantHistory: Array<GrowingPlant> = this.ngxArrayData[NgxDataType.totalInvest].series[targetMounthIndex]?.meta?.growingPlantHistory || []
       let nbRepotPlant = this.repotCalcul(investTypeTarget, growingPlantHistory)
-
+      growingPlantHistory = this.clearGrowingHistory(investTypeTarget, growingPlantHistory)
+      
+      
       // feed growingPlant
       let nbPlantPaid = Math.trunc(totalReinvestWithLastMounthRest / investTypeTarget.price)
       let totalNbPlantPaid = nbPlantPaid + nbRepotPlant
       let resteInvest = totalReinvestWithLastMounthRest - investTypeTarget.price * nbPlantPaid
       if (nbPlantPaid > 0) growingPlantHistory.push({nbPlant: nbPlantPaid, age: 0})
+
+      // total growing plant
+      let totalPlantInGrowing = this.calculateTotalPlantInGrowing(growingPlantHistory)
+      let ngxDataTypeTotalPlantInGrowing: NgxChartSeries = {
+        name: `${currentYear}${mounth.name} (${index+1})`,
+        value: totalPlantInGrowing,
+      }
+      this.ngxArrayData[NgxDataType.totalPlantInGrowing].series.push(ngxDataTypeTotalPlantInGrowing)
 
       // total invest
       let ngxDataTypeTotalInvest: NgxChartSeries = {
@@ -149,7 +159,6 @@ export class NgxChartClass {
         value: totalInvest,
         meta: {
           nbPlantPaid: totalNbPlantPaid, 
-          growingPlantHistory: [...growingPlantHistory],
           resteInvest: resteInvest
         }
       }
@@ -169,6 +178,14 @@ export class NgxChartClass {
       }
       this.ngxArrayData[NgxDataType.currentPlantPaid].series.push(ngxDataTypeCurrentPlantPaid)
     })
+  }
+
+  calculateTotalPlantInGrowing(growingPlantHistory: Array<GrowingPlant>): number {
+    let totalPlantInGrowing = 0
+    growingPlantHistory.forEach((e: GrowingPlant) => {
+      totalPlantInGrowing += e.nbPlant
+    })
+    return totalPlantInGrowing
   }
 
   calculateTotals(index: number, totalInvest: number, totalMySelfInvest: number, reinvest: number, gain: number) {
@@ -208,10 +225,23 @@ export class NgxChartClass {
   repotCalcul(investTypeTarget: InvestType, growingPlantHistory: Array<GrowingPlant>): number {
     let nbRepotPlant = 0
     growingPlantHistory.forEach((e: GrowingPlant, index) => {
-      if (investTypeTarget.harvestPerYear > 0) growingPlantHistory[index].age += (12 / investTypeTarget.harvestPerYear)
+      growingPlantHistory[index].age++
       if (this.itsTimeToRepot(investTypeTarget, e.age)) nbRepotPlant += e.nbPlant
     })
     return nbRepotPlant
+  }
+
+  clearGrowingHistory(investTypeTarget: InvestType,growingPlantHistory: Array<GrowingPlant>): Array<GrowingPlant> {
+    return growingPlantHistory.filter((e: GrowingPlant) => !this.isOverTimeGrowing(investTypeTarget, e.age)) 
+  }
+
+  isOverTimeGrowing(investTypeTarget: InvestType, currentAge: number) {
+    let maxMounthReplot = investTypeTarget.growingPeriod ? this.getMounthCountByGrowingPeriod(investTypeTarget.growingPeriod)+1 : investTypeTarget.businessPlan * 12
+    if(currentAge == maxMounthReplot && currentAge != 0) {
+      return true
+    } else {
+      return false
+    }
   }
 
   itsTimeToRepot(investTypeTarget: InvestType, currentAge: number): boolean {
