@@ -24,6 +24,7 @@ export interface GrowingPlant {
 export enum NgxDataType {
   totalInvest,
   totalSelfInvest,
+  currentInvest,
   currentRent,
   benefit,
   realBenefit,

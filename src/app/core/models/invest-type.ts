@@ -31,6 +31,8 @@ export interface DisplayPanel {
   realBenefit: boolean;
   currentPlantPaid: boolean;
   totalPlantInGrowing: boolean;
+  currentRent: boolean;
+  totalSelfInvest: boolean;
 }
 
 export var investTypeData: Array<InvestType> = [

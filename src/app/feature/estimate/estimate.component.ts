@@ -31,7 +31,9 @@ export class EstimateComponent implements OnInit {
     totalInvest: true,
     realBenefit: false,
     currentPlantPaid: true,
-    totalPlantInGrowing: false
+    totalPlantInGrowing: false,
+    currentRent: false,
+    totalSelfInvest: true
   }
 
   // Enum && Data declaration
