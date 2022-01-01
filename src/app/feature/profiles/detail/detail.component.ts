@@ -24,4 +24,20 @@ export class ProfilesDetailComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /* 
+    Tabs : 
+  - Mon estimation
+  - Mon investissement
+    - tableau d'input
+      - mounthInvest
+      - rentMounth
+      - Reinvest (hors mounthInvest)
+      - gain
+    - graph relatif aux datax du tableau
+      - totalInvest
+      - currentInvest (avec mounthInvest)
+      - totalSelfInvest
+  - Mes statistiques
+  */
+
 }

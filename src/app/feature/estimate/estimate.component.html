@@ -1,87 +1,88 @@
-<div style="height: 100vh;">
-  <navbar (ref)="setXWidth($event)"></navbar>
-  <div class="container mt-3">
-    <div class="row">
-      <div class="col-12 mb-3"><span class="primary border-bottom border-secondary pb-1 pe-1">Paramètres d'investissement</span></div>
-      <mat-form-field  class="col-6">
-        <mat-label>Prêt de départ (€)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="investParams.investLoanning"/>
-      </mat-form-field>
-      <mat-form-field  class="col-6">
-        <mat-label>Temps avant remboursement (en mois)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="investParams.loanningTimeRefund"/>
-      </mat-form-field>
-      <mat-form-field  class="col-6">
-        <mat-label>Capital d'investissement de départ (€) (hors prêt)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="investParams.investStarter"/>
-      </mat-form-field>
-      <mat-form-field  class="col-6">
-        <mat-label>Investissement par mois (€)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="investParams.investByMounth"/>
-      </mat-form-field>
-      <mat-form-field  class="col-12">
-        <mat-label>Investissement ponctuel (ex: moisCible/montant;moisCible2;montant2) (Not yet implemented)</mat-label>
-        <input matInput type="text" [(ngModel)]="investParams.ponctualInvest"/>
-      </mat-form-field>
+<navbar (ref)="setXWidth($event)"></navbar>
+<div class="container" style="margin-top: 56px;">
+  <button mat-raised-button color="primary" class="my-3 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseParams" aria-expanded="false" aria-controls="collapseParams">
+    Paramètres
+  </button>
+  <div class="row collapse mb-5" id="collapseParams">
+    <div class="col-12 mb-3"><span class="primary border-bottom border-secondary pb-1 pe-1">Paramètres d'investissement</span></div>
+    <mat-form-field  class="col-6">
+      <mat-label>Prêt de départ (€)</mat-label>
+      <input matInput type="number" [min]="0" [(ngModel)]="investParams.investLoanning"/>
+    </mat-form-field>
+    <mat-form-field  class="col-6">
+      <mat-label>Temps avant remboursement (en mois)</mat-label>
+      <input matInput type="number" [min]="0" [(ngModel)]="investParams.loanningTimeRefund"/>
+    </mat-form-field>
+    <mat-form-field  class="col-6">
+      <mat-label>Capital d'investissement de départ (€) (hors prêt)</mat-label>
+      <input matInput type="number" [min]="0" [(ngModel)]="investParams.investStarter"/>
+    </mat-form-field>
+    <mat-form-field  class="col-6">
+      <mat-label>Investissement par mois (€)</mat-label>
+      <input matInput type="number" [min]="0" [(ngModel)]="investParams.investByMounth"/>
+    </mat-form-field>
+    <mat-form-field  class="col-12">
+      <mat-label>Investissement ponctuel (ex: moisCible/montant;moisCible2;montant2) (Not yet implemented)</mat-label>
+      <input matInput type="text" [(ngModel)]="investParams.ponctualInvest"/>
+    </mat-form-field>
 
-      <div class="col-12 my-3 text-end"><span class="primary border-bottom border-secondary pb-1 ps-1">Paramètres de réinvestissement</span></div>
+    <div class="col-12 my-3 text-end"><span class="primary border-bottom border-secondary pb-1 ps-1">Paramètres de réinvestissement</span></div>
 
-      <mat-form-field class="col-6">
-        <mat-label>Réinvestissement des gains (%)</mat-label>
-        <input matInput type="number" [min]="0" [max]="100" [(ngModel)]="partialReinvest.percent"/>
-      </mat-form-field>
-      <mat-form-field class="col-6">
-        <mat-label>Temps minimal avant le premier retrait (en mois)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.minimalTimeBeforeDrop"/>
-      </mat-form-field>
-      <mat-form-field class="col-6">
-        <mat-label>Fréquence de retrait (en mois)</mat-label>
-        <input matInput type="number" [min]="1" [(ngModel)]="partialReinvest.frequency"/>
-      </mat-form-field>
-      <mat-form-field class="col-6">
-        <mat-label>Plafond max par retrait (€) (0 = pas de plafond)</mat-label>
-        <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.maxRentDrop"/>
-      </mat-form-field>
+    <mat-form-field class="col-6">
+      <mat-label>Réinvestissement des gains (%)</mat-label>
+      <input matInput type="number" [min]="0" [max]="100" [(ngModel)]="partialReinvest.percent"/>
+    </mat-form-field>
+    <mat-form-field class="col-6">
+      <mat-label>Temps minimal avant le premier retrait (en mois)</mat-label>
+      <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.minimalTimeBeforeDrop"/>
+    </mat-form-field>
+    <mat-form-field class="col-6">
+      <mat-label>Fréquence de retrait (en mois)</mat-label>
+      <input matInput type="number" [min]="1" [(ngModel)]="partialReinvest.frequency"/>
+    </mat-form-field>
+    <mat-form-field class="col-6">
+      <mat-label>Plafond max par retrait (€) (0 = pas de plafond)</mat-label>
+      <input matInput type="number" [min]="0" [(ngModel)]="partialReinvest.maxRentDrop"/>
+    </mat-form-field>
 
-      <div class="col-12 my-3"><span class="primary border-bottom border-secondary pb-1 pe-1">Paramètres globeaux</span></div>
+    <div class="col-12 my-3"><span class="primary border-bottom border-secondary pb-1 pe-1">Paramètres globeaux</span></div>
 
-      <mat-form-field class="col-6">
-        <mat-label>Investissement Type</mat-label>
-        <mat-select [(ngModel)]="investParams.investTypeId">
-          <mat-option *ngFor="let investType of investTypeData" value="{{investType.id}}">{{investType.name}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field  class="col-6">
-        <mat-label>Nombre d'années</mat-label>
-        <input matInput type="number" [min]="1" [(ngModel)]="yearsGeneration"/>
-      </mat-form-field>
+    <mat-form-field class="col-6">
+      <mat-label>Investissement Type</mat-label>
+      <mat-select [(ngModel)]="investParams.investTypeId">
+        <mat-option *ngFor="let investType of investTypeData" value="{{investType.id}}">{{investType.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field  class="col-6">
+      <mat-label>Nombre d'années</mat-label>
+      <input matInput type="number" [min]="1" [(ngModel)]="yearsGeneration"/>
+    </mat-form-field>
 
-      <div class="col-12 text-center my-3"><span class="primary border-bottom border-secondary pb-1 px-1">Filtres</span></div>
+    <div class="col-12 text-center my-3"><span class="primary border-bottom border-secondary pb-1 px-1">Filtres</span></div>
 
-      <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalInvest"><span style="white-space: normal;">Total investi</span></mat-checkbox>
-      <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalSelfInvest"><span style="white-space: normal;">Total investi soi meme</span></mat-checkbox>
-      <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.realBenefit"><span style="white-space: normal;">Bénéfice réel</span></mat-checkbox>
-      <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.currentRent"><span style="white-space: normal;">Rentrée courante</span></mat-checkbox>
-      <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.currentPlantPaid"><span style="white-space: normal;">Plante payé</span></mat-checkbox>
-      <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalPlantInGrowing"><span style="white-space: normal;">Plante total en croissance</span></mat-checkbox>
-      <div class="col-12 d-flex align-items-center justify-content-center">
-        <button mat-raised-button color="primary" (click)="recalculate()">Recalculer</button>
-      </div>
-    </div>  
-    <div class="my-5 d-flex justify-content-center">
-      <ngx-charts-line-chart
-        [view]="[xWidth, window().innerHeight * 0.8]"
-        [autoScale]="true"
-        [legendPosition]="legendPosition"
-        [legend]="legend"
-        [showXAxisLabel]="showXAxisLabel"
-        [showYAxisLabel]="showYAxisLabel"
-        [xAxis]="xAxis"
-        [yAxis]="yAxis"
-        [xAxisLabel]="xAxisLabel"
-        [yAxisLabel]="yAxisLabel"
-        [results]="ngxArrayData">
-      </ngx-charts-line-chart>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalInvest"><span style="white-space: normal;">Total investi</span></mat-checkbox>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalSelfInvest"><span style="white-space: normal;">Total investi soi meme</span></mat-checkbox>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.realBenefit"><span style="white-space: normal;">Bénéfice réel</span></mat-checkbox>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.currentRent"><span style="white-space: normal;">Rentrée courante</span></mat-checkbox>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.currentPlantPaid"><span style="white-space: normal;">Plante payé</span></mat-checkbox>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalPlantInGrowing"><span style="white-space: normal;">Plante total en croissance</span></mat-checkbox>
+    <div class="col-12 d-flex align-items-center justify-content-center">
+      <button mat-raised-button color="primary" (click)="recalculate()">Recalculer</button>
     </div>
+  </div>  
+  <div class="d-flex justify-content-center">
+    <ngx-charts-line-chart
+      [view]="[xWidth, window().innerHeight -56 -21 -32]"
+      [autoScale]="true"
+      [legendPosition]="legendPosition"
+      [legend]="legend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [results]="ngxArrayData">
+    </ngx-charts-line-chart>
   </div>
 </div>
