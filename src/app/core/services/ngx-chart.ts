@@ -10,13 +10,11 @@ export class NgxChartClass {
 
   // options
   years: Array<Mounth>;
-  yearsGeneration: number;
   ngxArrayData: Array<NgxChart>;
 
-  constructor(yearsGeneration: number, investParams: InvestParams, partialReinvest: PartialReinvest, displayPanel: DisplayPanel) {
+  constructor(investParams: InvestParams, partialReinvest: PartialReinvest, displayPanel: DisplayPanel) {
     // options
     this.years = []
-    this.yearsGeneration = yearsGeneration
     this.displayPanel = displayPanel
     
     // variables
@@ -36,17 +34,15 @@ export class NgxChartClass {
     this.calculateYear()
   }
 
-  setParams(yearsGeneration: number, investParams: InvestParams, partialReinvest: PartialReinvest) {
+  setParams(investParams: InvestParams, partialReinvest: PartialReinvest) {
     this.investParams = investParams
-    this.yearsGeneration = yearsGeneration
     this.partialReinvest = partialReinvest
   }
 
-  calculateYear(yearsGeneration?: number) {
-    yearsGeneration ? this.yearsGeneration = yearsGeneration : null
+  calculateYear() {
     this.years = []
 
-    for(let i = 0; i < this.yearsGeneration; i++) {
+    for(let i = 0; i < this.investParams.yearsGeneration; i++) {
       oneYear.forEach((mount: Mounth) => {
         this.years.push(mount)
       })

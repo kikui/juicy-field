@@ -8,13 +8,16 @@ import { EstimateComponent } from './feature/estimate/estimate.component';
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { ProfilesComponent } from './feature/profiles/profiles.component';
 import { ProfilesDetailComponent } from './feature/profiles/detail/detail.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ProfilesCreateComponent } from './feature/profiles/create/create.component';
+import { DialogProfilesCreate } from './feature/profiles/create/create.component';
+import { InvestismentComponent } from './feature/investisment/investisment.component';
+
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';  
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import { ProfilesCreateComponent } from './feature/profiles/create/create.compon
     ProfilesComponent,
     ProfilesDetailComponent,
     NavbarComponent,
-    ProfilesCreateComponent
+    DialogProfilesCreate,
+    InvestismentComponent
   ],
   imports: [
     BrowserModule,

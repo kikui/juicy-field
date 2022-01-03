@@ -1,4 +1,19 @@
-<navbar></navbar>
-<div class="d-flex justify-content-center align-items-center h-100">
-  <strong>No content</strong>
+<h1 mat-dialog-title>Créer un profil</h1>
+<div mat-dialog-content>
+  <mat-form-field  class="col-12">
+    <mat-label>Nom complet du profil</mat-label>
+    <input matInput type="text" [(ngModel)]="profile.name"/>
+  </mat-form-field>
+  <mat-form-field  class="col-12">
+    <mat-label>pseudo du profil</mat-label>
+    <input matInput type="text" [(ngModel)]="profile.pseudo"/>
+  </mat-form-field>
+  <mat-form-field  class="col-12">
+    <mat-label>url d'image du profil</mat-label>
+    <input matInput type="text" [(ngModel)]="profile.imageUrl"/>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button (click)="createProfile()">Créer</button>
 </div>

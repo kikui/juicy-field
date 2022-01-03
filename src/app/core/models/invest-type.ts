@@ -23,6 +23,7 @@ export interface InvestParams {
   investStarter: number;
   investByMounth: number;
   investTypeId: string;
+  yearsGeneration: number;
   ponctualInvest: string;
 }
 

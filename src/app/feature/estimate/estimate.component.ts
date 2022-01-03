@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { DisplayPanel, InvestParams, PartialReinvest } from 'src/app/core/models/invest-type';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
@@ -12,22 +12,26 @@ import { NgxChartClass } from 'src/app/core/services/ngx-chart';
   styleUrls: ['./estimate.component.scss']
 })
 export class EstimateComponent implements OnInit {
+  // output
+  @Output() submit = new EventEmitter();
+
   // input
-  investParams: InvestParams = {
+  @Input() investParams: InvestParams = {
     investLoanning: 0,
     loanningTimeRefund: 0,
     investStarter: 0,
     investByMounth: 50,
     investTypeId: "0",
+    yearsGeneration: 1,
     ponctualInvest: ""
   }
-  partialReinvest: PartialReinvest = {
+  @Input() partialReinvest: PartialReinvest = {
     percent: 100,
     maxRentDrop: 0,
     minimalTimeBeforeDrop: 0,
     frequency: 1
   }
-  displayPanel: DisplayPanel = {
+  @Input() displayPanel: DisplayPanel = {
     totalInvest: true,
     realBenefit: false,
     currentPlantPaid: true,
@@ -54,20 +58,13 @@ export class EstimateComponent implements OnInit {
   showXAxisLabel: boolean = true;
   xAxisLabel: string = 'Temps';
   yAxisLabel: string = 'Argent (€)';
-  xWidth: number = 500
 
-  setXWidth(event: any) {
-    this.xWidth = event.nativeElement.offsetWidth || 500
-  }
-
-  // calcul option
-  yearsGeneration = 1
 
   // ngxChartClass
   currentCalcul: any;
 
   constructor() {
-    this.currentCalcul = new NgxChartClass(this.yearsGeneration, this.investParams, this.partialReinvest, this.displayPanel)
+    this.currentCalcul = new NgxChartClass(this.investParams, this.partialReinvest, this.displayPanel)
   }
 
   ngOnInit(): void {
@@ -76,15 +73,24 @@ export class EstimateComponent implements OnInit {
     this.ngxArrayData = this.currentCalcul.ngxArrayData
   }
 
+  save() {
+    let allParams = {
+      investParams: this.investParams,
+      partialReinvest: this.partialReinvest,
+      displayPanel: this.displayPanel
+    }
+    this.submit.emit(allParams)
+  }
+
   recalculate() {
-    this.currentCalcul.setParams(this.yearsGeneration, this.investParams, this.partialReinvest, this.displayPanel)
+    this.currentCalcul.setParams(this.investParams, this.partialReinvest, this.displayPanel)
     this.currentCalcul.recalculate()
     this.currentCalcul.applyFilter()
     this.ngxArrayData = [...this.currentCalcul.ngxArrayData]
     console.log(this.ngxArrayData)
   }
 
-  window() : any {
+  window(): any {
     return window;
   }
 

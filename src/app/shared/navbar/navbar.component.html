@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" #navbarRef style="border-bottom: 1px solid #e7e7e7;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style="border-bottom: 1px solid #e7e7e7;">
   <div class="navbar-brand text-uppercase fw-bold mx-2">Juicy Field</div>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
     aria-controls="navbarSupportedContent" aria-label="Toggle navigation" >
@@ -10,9 +10,7 @@
       <li class="nav-item">
         <a class="nav-link" routerLinkActive="active" routerLink="/profiles">Liste des profiles</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/estimation">Estimation</a>
-      </li>
+      <!-- <li class="nav-item"><a class="nav-link" routerLinkActive="active" routerLink="/estimation">Estimation</a></li> -->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
           [ngClass]="{'active': rla.isActive}">
@@ -20,7 +18,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown" routerLinkActive="active" #rla="routerLinkActive">
           <li *ngFor="let profile of profiles">
-            <a class="dropdown-item" routerLinkActive="active" routerLink="/profile/{{profile.pseudo}}" >{{profile.name}}</a>
+            <a class="dropdown-item" routerLinkActive="active" routerLink="/profile/{{profile.pseudo}}">{{profile.name}}</a>
           </li>
         </ul>
       </li>

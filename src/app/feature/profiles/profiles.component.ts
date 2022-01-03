@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DocumentData } from '@firebase/firestore';
 import { Profile } from 'src/app/core/models/profile';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
+import { DialogProfilesCreate } from './create/create.component';
 
 @Component({
   selector: 'app-profiles',
@@ -11,7 +13,7 @@ import { FirestoreService } from 'src/app/core/services/firestore.service';
 export class ProfilesComponent implements OnInit {
   profiles: Array<Profile | DocumentData> = []
 
-  constructor(public firestoreService: FirestoreService ) {
+  constructor(public firestoreService: FirestoreService, public dialog: MatDialog) {
     
   }
 
@@ -19,6 +21,10 @@ export class ProfilesComponent implements OnInit {
     this.firestoreService.profiles.subscribe((profilesData) => {
       this.profiles = profilesData
     })
+  }
+
+  openDialog() {
+    this.dialog.open(DialogProfilesCreate);
   }
 
 }

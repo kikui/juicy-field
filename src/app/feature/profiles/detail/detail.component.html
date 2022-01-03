@@ -1,5 +1,12 @@
-<mat-tab-group mat-align-tabs="center" headerPosition="below" style="width: 100%; height: 100%;" backgroundColor="primary">
-  <mat-tab label="Mon estimation"><app-estimate></app-estimate></mat-tab>
+<mat-tab-group mat-align-tabs="center" headerPosition="below" style="width: 100%; height: 100%;" backgroundColor="primary" selectedIndex="0">
+  <mat-tab label="Mon estimation">
+    <app-estimate #estimateComponent
+      [investParams]="profile.investParams" 
+      [partialReinvest]="profile.partialReinvest" 
+      [displayPanel]="profile.displayPanel"
+      (submit)="setParamsFromEstimate($event)">
+    </app-estimate>
+  </mat-tab>
   <mat-tab label="Mon investissement"></mat-tab>
   <mat-tab label="Mes statistiques"></mat-tab>
 </mat-tab-group>
