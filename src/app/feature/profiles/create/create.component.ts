@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Profile } from 'src/app/core/models/profile';
+import { oneYear } from 'src/app/core/models/year';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 
 @Component({
@@ -37,7 +38,7 @@ export class DialogProfilesCreate {
         totalSelfInvest: true
       }
     },
-    myInvestisment: [{mounthTarget: "Janvier 2022", mounthInvest: 0, rentMounth: 0, reinvest: 0, gain: 0}]
+    myInvestisment: [{year: 2022, mounth: oneYear[0], mounthInvest: 0, rentMounth: 0, reinvest: 0, gain: 0}]
   }
   constructor(private firestoreService: FirestoreService, public dialogRef: MatDialogRef<DialogProfilesCreate>) {}
 

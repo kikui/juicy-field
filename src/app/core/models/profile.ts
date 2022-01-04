@@ -1,4 +1,5 @@
 import { DisplayPanel, InvestParams, PartialReinvest } from "./invest-type";
+import { Mounth } from "./year";
 
 export interface Profile {
   name: string;
@@ -15,9 +16,15 @@ export interface Estimate {
 }
 
 export interface Investisment {
-  mounthTarget: string;
+  year: number;
+  mounth: Mounth;
   mounthInvest: number;
   rentMounth: number;
   reinvest: number;
   gain: number;
+}
+
+export enum EnumSortType {
+  ASC,
+  DESC
 }

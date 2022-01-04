@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentData } from 'rxfire/firestore/interfaces';
 import { Observable } from 'rxjs';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
-import { Investisment, Profile } from 'src/app/core/models/profile';
+import { EnumSortType, Investisment, Profile } from 'src/app/core/models/profile';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { NgxChartClass } from 'src/app/core/services/ngx-chart';
+import { NgxChartInvestClass } from 'src/app/core/services/ngx-chart-invest';
 import { EstimateComponent } from '../../estimate/estimate.component';
 
 @Component({
@@ -50,16 +51,23 @@ export class ProfilesDetailComponent implements OnInit {
   myInvestismentGraph: Array<NgxChart> = [];
 
   constructor(private firestore: FirestoreService, private route: ActivatedRoute) {
-    this.currentInvestCalcul = new NgxChartClass()
+    this.currentInvestCalcul = new NgxChartInvestClass(this.profile.myInvestisment)
   }
 
   ngOnInit(): void {
     this.firestore.getProfile(this.route.snapshot.params['pseudo']).subscribe((data) => {
       this.profile = data
-      this.profile.myInvestisment.sort((a: Investisment, b: Investisment) => this.sortMyInvestisment(a, b))
-      // this.myInvestismentGraph = [...this.currentInvestCalcul.calculMyInvest(this.profile.myInvestisment)]
-      console.log(this.profile)
+
+      // invest calcul
+      let ascMyInvest = [...this.profile.myInvestisment.sort((a: Investisment, b: Investisment) => this.sortMyInvestisment(a, b, EnumSortType.ASC))]
+      this.myInvestismentGraph = [...this.currentInvestCalcul.recalculate(ascMyInvest)]
+      
+      // invest table order
+      this.profile.myInvestisment.sort((a: Investisment, b: Investisment) => this.sortMyInvestisment(a, b, EnumSortType.DESC))
+
+      // estimate recalcul
       setTimeout(() => this.estimateComponent?.recalculate(), 100);
+      console.log(this.profile)
     })
   }
 
@@ -77,13 +85,20 @@ export class ProfilesDetailComponent implements OnInit {
     })
   }
 
-  sortMyInvestisment(a: Investisment, b: Investisment) {
-    let x = a.mounthTarget.toLowerCase();
-    let y = b.mounthTarget.toLowerCase();
-
-    if(x<y){return 1;} 
-    if(x>y){return -1;}
-    return 0;
+  sortMyInvestisment(a: Investisment, b: Investisment, type: EnumSortType) {
+    if(type == EnumSortType.DESC) {
+      if (a.year == b.year) {
+        return a.mounth.position < b.mounth.position ? 1 : -1
+      } 
+      return a.year < b.year ? 1 : -1
+    } else if (type == EnumSortType.ASC) {
+      if (a.year == b.year) {
+        return a.mounth.position > b.mounth.position ? 1 : -1
+      } 
+      return a.year > b.year ? 1 : -1
+    } else {
+      return 0
+    }
   }
 
   /* 

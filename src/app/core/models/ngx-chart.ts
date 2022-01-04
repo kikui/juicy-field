@@ -29,3 +29,9 @@ export enum NgxDataType {
   currentPlantPaid,
   totalPlantInGrowing
 }
+
+export enum NgxDataTypeInvest {
+  totalInvest,
+  totalSelfInvest,
+  totalGain
+}
