@@ -20,3 +20,9 @@
 .card:hover {
   background-color: rgb(248, 249, 250);
 }
+
+@media (min-width: 992px) {
+  .profile-container {
+   height: 100%;
+  }
+}
