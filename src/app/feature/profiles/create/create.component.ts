@@ -12,29 +12,32 @@ export class DialogProfilesCreate {
     name: "",
     pseudo: "",
     imageUrl: "",
-    investParams: {
-      investLoanning: 0,
-      loanningTimeRefund: 0,
-      investStarter: 0,
-      investByMounth: 0,
-      investTypeId: "0",
-      yearsGeneration: 1,
-      ponctualInvest: ""
+    myEstimate: {
+      investParams: {
+        investLoanning: 0,
+        loanningTimeRefund: 0,
+        investStarter: 0,
+        investByMounth: 0,
+        investTypeId: "0",
+        yearsGeneration: 1,
+        ponctualInvest: ""
+      },
+      partialReinvest: {
+        percent: 100,
+        maxRentDrop: 0,
+        minimalTimeBeforeDrop: 0,
+        frequency: 1
+      },
+      displayPanel: {
+        totalInvest: true,
+        realBenefit: false,
+        currentPlantPaid: true,
+        totalPlantInGrowing: false,
+        currentRent: false,
+        totalSelfInvest: true
+      }
     },
-    partialReinvest: {
-      percent: 100,
-      maxRentDrop: 0,
-      minimalTimeBeforeDrop: 0,
-      frequency: 1
-    },
-    displayPanel: {
-      totalInvest: true,
-      realBenefit: false,
-      currentPlantPaid: true,
-      totalPlantInGrowing: false,
-      currentRent: false,
-      totalSelfInvest: true
-    }
+    myInvestisment: [{mounthTarget: "Janvier 2022", mounthInvest: 0, rentMounth: 0, reinvest: 0, gain: 0}]
   }
   constructor(private firestoreService: FirestoreService, public dialogRef: MatDialogRef<DialogProfilesCreate>) {}
 

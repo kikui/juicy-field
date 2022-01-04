@@ -17,7 +17,6 @@ import { InvestismentComponent } from './feature/investisment/investisment.compo
 
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getStorage, provideStorage } from '@angular/fire/storage';  
 
 @NgModule({
   declarations: [

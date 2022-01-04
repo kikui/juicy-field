@@ -59,7 +59,6 @@ export class EstimateComponent implements OnInit {
   xAxisLabel: string = 'Temps';
   yAxisLabel: string = 'Argent (€)';
 
-
   // ngxChartClass
   currentCalcul: any;
 
@@ -67,19 +66,15 @@ export class EstimateComponent implements OnInit {
     this.currentCalcul = new NgxChartClass(this.investParams, this.partialReinvest, this.displayPanel)
   }
 
-  ngOnInit(): void {
-    this.currentCalcul.calculateNgxArrayData()
-    this.currentCalcul.applyFilter()
-    this.ngxArrayData = this.currentCalcul.ngxArrayData
-  }
+  ngOnInit(): void { }
 
   save() {
-    let allParams = {
+    let myEstimate = {
       investParams: this.investParams,
       partialReinvest: this.partialReinvest,
       displayPanel: this.displayPanel
     }
-    this.submit.emit(allParams)
+    this.submit.emit(myEstimate)
   }
 
   recalculate() {

@@ -34,9 +34,13 @@ export class FirestoreService {
 
   updateEstimate(data: any) {
     updateDoc(doc(this.db, "profiles", data.pseudo), {
-      investParams: data.investParams,
-      partialReinvest: data.partialReinvest,
-      displayPanel: data.displayPanel
+      myEstimate: data.myEstimate
+    })
+  }
+
+  updateInvestisment(data: any) {
+    updateDoc(doc(this.db, "profiles", data.pseudo), {
+      myInvestisment: data.myInvestisment
     })
   }
 
