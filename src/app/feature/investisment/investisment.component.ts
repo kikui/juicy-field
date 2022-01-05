@@ -45,7 +45,7 @@ export class InvestismentComponent implements OnInit {
   }
 
   addEntrie() {
-    this.myInvestisment.unshift({year: 2022, mounth: oneYear[0].name, mounthInvest: 0, rentMounth: 0, reinvest: 0, gain: 0})
+    this.myInvestisment.unshift({year: 2022, mounth: oneYear[0].name, mounthInvest: 0, restMounth: 0, reinvest: 0, gain: 0})
     this.myInvestisment = [...this.myInvestisment]
   }
 

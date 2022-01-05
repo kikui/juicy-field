@@ -39,7 +39,7 @@ export class DialogProfilesCreate {
         benefit: true
       }
     },
-    myInvestisment: [{year: 2022, mounth: oneYear[0].name, mounthInvest: 0, rentMounth: 0, reinvest: 0, gain: 0}]
+    myInvestisment: [{year: 2022, mounth: oneYear[0].name, mounthInvest: 0, restMounth: 0, reinvest: 0, gain: 0}]
   }
   constructor(private firestoreService: FirestoreService, public dialogRef: MatDialogRef<DialogProfilesCreate>) {}
 

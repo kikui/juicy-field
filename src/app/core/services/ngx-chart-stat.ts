@@ -41,8 +41,8 @@ export class NgxChartStatClass {
       let targetMounth = this.getTargetMounthIndex(this.investType, index)
       if (targetMounth < 0) return
 
-      let targetMounthPay =  this.myInvestisment[targetMounth].mounthInvest + this.myInvestisment[targetMounth].reinvest
-      let currentRentability = 100 * investisment.rentMounth / targetMounthPay - 100
+      let targetMounthPay = this.myInvestisment[targetMounth].mounthInvest + this.myInvestisment[targetMounth].reinvest
+      let currentRentability = 100 * investisment.reinvest / targetMounthPay - 100
       let ngxCurrentInvest: NgxChartSeries = {
         name: `${investisment.mounth} ${investisment.year}`,
         value: currentRentability,

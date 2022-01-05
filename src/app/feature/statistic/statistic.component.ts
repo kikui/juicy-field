@@ -41,6 +41,7 @@ export class StatisticComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.currentStatCalcul.recalculate(changes['myInvestisment'].currentValue, investTypeData[0])
+    this.myStatGraph = [...this.currentStatCalcul.ngxArrayData]
   }
 
   window(): any {

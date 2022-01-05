@@ -19,7 +19,7 @@ export interface Investisment {
   year: number;
   mounth: string;
   mounthInvest: number;
-  rentMounth: number;
+  restMounth: number;
   reinvest: number;
   gain: number;
 }
