@@ -25,9 +25,11 @@ export enum NgxDataType {
   currentInvest,
   currentRent,
   benefit,
-  realBenefit,
+  profit,
+  realProfit,
   currentPlantPaid,
-  totalPlantInGrowing
+  totalPlantInGrowing,
+  benefitFinal
 }
 
 export enum NgxDataTypeInvest {
@@ -35,4 +37,8 @@ export enum NgxDataTypeInvest {
   totalSelfInvest,
   currentInvest,
   totalGain,
+}
+
+export enum NgxDataTypeStat {
+  currentRentability
 }

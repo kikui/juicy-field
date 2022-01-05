@@ -61,10 +61,11 @@
 
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalInvest"><span style="white-space: normal;">Total investi</span></mat-checkbox>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalSelfInvest"><span style="white-space: normal;">Total investi soi meme</span></mat-checkbox>
-    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.realBenefit"><span style="white-space: normal;">Bénéfice réel</span></mat-checkbox>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.realProfit"><span style="white-space: normal;">Profit réel</span></mat-checkbox>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.currentRent"><span style="white-space: normal;">Rentrée courante</span></mat-checkbox>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.currentPlantPaid"><span style="white-space: normal;">Plante payé</span></mat-checkbox>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalPlantInGrowing"><span style="white-space: normal;">Plante total en croissance</span></mat-checkbox>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.benefit"><span style="white-space: normal;">Bénéfice</span></mat-checkbox>
     <div class="col-12 d-flex align-items-center justify-content-center">
       <button mat-raised-button color="primary" (click)="save()">Recalculer</button>
     </div>

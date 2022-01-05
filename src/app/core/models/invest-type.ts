@@ -29,11 +29,12 @@ export interface InvestParams {
 
 export interface DisplayPanel {
   totalInvest: boolean;
-  realBenefit: boolean;
+  realProfit: boolean;
   currentPlantPaid: boolean;
   totalPlantInGrowing: boolean;
   currentRent: boolean;
   totalSelfInvest: boolean;
+  benefit: boolean;
 }
 
 export var investTypeData: Array<InvestType> = [

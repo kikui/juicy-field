@@ -25,8 +25,9 @@ export class NgxChartClass {
       {name: "Total investi soi meme", series: []},
       {name: "Investissement courant", series: []},
       {name: "Rentrée courante", series: []},
-      {name: "Bénéfice retiré", series: []},
-      {name: "Bénéfice réel", series: []},
+      {name: "Bénéfice", series: []},
+      {name: "Profit retiré", series: []},
+      {name: "Profit réel", series: []},
       {name: "Plante courante payé", series: []},
       {name: "Total plante en croissance", series: []},
     ]
@@ -64,14 +65,15 @@ export class NgxChartClass {
 
   applyFilter() {
     if(!this.displayPanel.totalInvest) this.ngxArrayData[NgxDataType.totalInvest].series = []
-    if(!this.displayPanel.realBenefit) this.ngxArrayData[NgxDataType.realBenefit].series = []
+    if(!this.displayPanel.realProfit) this.ngxArrayData[NgxDataType.realProfit].series = []
     if(!this.displayPanel.currentPlantPaid) this.ngxArrayData[NgxDataType.currentPlantPaid].series = []
     if(!this.displayPanel.totalPlantInGrowing) this.ngxArrayData[NgxDataType.totalPlantInGrowing].series = []
     if(!this.displayPanel.currentRent) this.ngxArrayData[NgxDataType.currentRent].series = []
     if(!this.displayPanel.totalSelfInvest) this.ngxArrayData[NgxDataType.totalSelfInvest].series = []
+    if(!this.displayPanel.benefit) this.ngxArrayData[NgxDataType.benefit].series = []
     if(this.partialReinvest.percent == 100) {
-      this.ngxArrayData[NgxDataType.benefit].series = []
-      this.ngxArrayData[NgxDataType.realBenefit].series = []
+      this.ngxArrayData[NgxDataType.profit].series = []
+      this.ngxArrayData[NgxDataType.realProfit].series = []
     }
   }
 
@@ -96,19 +98,19 @@ export class NgxChartClass {
         gain = reinvestAndGain.gain
       }
       
-      // benefit
-      let ngxDataTypeBenefit: NgxChartSeries = {
+      // profit
+      let ngxDataTypeProfit: NgxChartSeries = {
         name: `${currentYear}${mounth.name} (${index+1})`,
         value: gain,
       }
-      this.ngxArrayData[NgxDataType.benefit].series.push(ngxDataTypeBenefit)
+      this.ngxArrayData[NgxDataType.profit].series.push(ngxDataTypeProfit)
 
       // real benefit
-      let ngxDataTypeRealBenefit: NgxChartSeries = {
+      let ngxDataTypeRealProfit: NgxChartSeries = {
         name: `${currentYear}${mounth.name} (${index+1})`,
         value: gain * 0.7,
       }
-      this.ngxArrayData[NgxDataType.realBenefit].series.push(ngxDataTypeRealBenefit)
+      this.ngxArrayData[NgxDataType.realProfit].series.push(ngxDataTypeRealProfit)
 
       // current rent
       let ngxDataTypeCurrentRent: NgxChartSeries = {
@@ -160,6 +162,14 @@ export class NgxChartClass {
         }
       }
       this.ngxArrayData[NgxDataType.totalInvest].series.push(ngxDataTypeTotalInvest)
+
+      // benefit
+      let benefice = totalInvest - totalMySelfInvest
+      let ngxDataTypeBenefice: NgxChartSeries = {
+        name: `${currentYear}${mounth.name} (${index+1})`,
+        value: benefice,
+      }
+      this.ngxArrayData[NgxDataType.benefit].series.push(ngxDataTypeBenefice)
 
       // current invest
       let ngxDataTypecurrentInvest: NgxChartSeries = {

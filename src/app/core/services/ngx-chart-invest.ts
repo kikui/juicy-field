@@ -15,7 +15,7 @@ export class NgxChartInvestClass {
       {name: "Total investi", series: []},
       {name: "Total investi soi meme", series: []},
       {name: "Investissement courant", series: []},
-      {name: "Total gain", series: []},
+      {name: "Total retrait", series: []},
     ]
   }
 

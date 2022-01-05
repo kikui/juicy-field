@@ -33,11 +33,12 @@ export class EstimateComponent implements OnInit {
   }
   @Input() displayPanel: DisplayPanel = {
     totalInvest: true,
-    realBenefit: false,
+    realProfit: false,
     currentPlantPaid: true,
     totalPlantInGrowing: false,
     currentRent: false,
-    totalSelfInvest: true
+    totalSelfInvest: true,
+    benefit: true
   }
 
   // Enum && Data declaration

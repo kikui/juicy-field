@@ -14,5 +14,7 @@
       (submit)="setMyInvestisment($event)">
     </app-investisment>
   </mat-tab>
-  <mat-tab label="Mes statistiques"></mat-tab>
+  <mat-tab label="Mes statistiques">
+    <app-statistic [myInvestisment]="myInvestisment"></app-statistic>
+  </mat-tab>
 </mat-tab-group>

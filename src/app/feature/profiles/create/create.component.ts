@@ -31,11 +31,12 @@ export class DialogProfilesCreate {
       },
       displayPanel: {
         totalInvest: true,
-        realBenefit: false,
+        realProfit: false,
         currentPlantPaid: true,
         totalPlantInGrowing: false,
         currentRent: false,
-        totalSelfInvest: true
+        totalSelfInvest: true,
+        benefit: true
       }
     },
     myInvestisment: [{year: 2022, mounth: oneYear[0].name, mounthInvest: 0, rentMounth: 0, reinvest: 0, gain: 0}]

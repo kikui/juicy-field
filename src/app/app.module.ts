@@ -17,6 +17,7 @@ import { InvestismentComponent } from './feature/investisment/investisment.compo
 
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { StatisticComponent } from './feature/statistic/statistic.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     ProfilesDetailComponent,
     NavbarComponent,
     DialogProfilesCreate,
-    InvestismentComponent
+    InvestismentComponent,
+    StatisticComponent
   ],
   imports: [
     BrowserModule,

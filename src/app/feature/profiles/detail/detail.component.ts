@@ -8,6 +8,7 @@ import { Mounth, oneYear } from 'src/app/core/models/year';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { NgxChartClass } from 'src/app/core/services/ngx-chart';
 import { NgxChartInvestClass } from 'src/app/core/services/ngx-chart-invest';
+import { NgxChartStatClass } from 'src/app/core/services/ngx-chart-stat';
 import { EstimateComponent } from '../../estimate/estimate.component';
 
 @Component({
@@ -50,6 +51,7 @@ export class ProfilesDetailComponent implements OnInit {
   @ViewChild('estimateComponent') estimateComponent?: EstimateComponent;
   currentInvestCalcul: any;
   myInvestismentGraph: Array<NgxChart> = [];
+  myInvestisment: Array<Investisment> = []
 
   constructor(private firestore: FirestoreService, private route: ActivatedRoute) {
     this.currentInvestCalcul = new NgxChartInvestClass(this.profile.myInvestisment)
@@ -60,8 +62,8 @@ export class ProfilesDetailComponent implements OnInit {
       this.profile = data
 
       // invest calcul
-      let ascMyInvest = [...this.profile.myInvestisment.sort((a: Investisment, b: Investisment) => this.sortMyInvestisment(a, b, EnumSortType.ASC))]
-      this.myInvestismentGraph = [...this.currentInvestCalcul.recalculate(ascMyInvest)]
+      this.myInvestisment = [...this.profile.myInvestisment.sort((a: Investisment, b: Investisment) => this.sortMyInvestisment(a, b, EnumSortType.ASC))]
+      this.myInvestismentGraph = [...this.currentInvestCalcul.recalculate(this.myInvestisment)]
       
       // invest table order
       this.profile.myInvestisment.sort((a: Investisment, b: Investisment) => this.sortMyInvestisment(a, b, EnumSortType.DESC))
