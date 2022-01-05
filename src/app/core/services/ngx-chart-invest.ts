@@ -14,7 +14,8 @@ export class NgxChartInvestClass {
     this.ngxArrayData = [
       {name: "Total investi", series: []},
       {name: "Total investi soi meme", series: []},
-      {name: "Total gain", series: []}
+      {name: "Investissement courant", series: []},
+      {name: "Total gain", series: []},
     ]
   }
 
@@ -41,10 +42,18 @@ export class NgxChartInvestClass {
     let totalGain = 0
 
     this.myInvestisment.forEach((investisment: Investisment) => {
+      // current invest
+      let currentInvest = investisment.mounthInvest + investisment.reinvest
+      let ngxCurrentInvest: NgxChartSeries = {
+        name: `${investisment.mounth} ${investisment.year}`,
+        value: currentInvest,
+      }
+      this.ngxArrayData[NgxDataTypeInvest.currentInvest].series.push(ngxCurrentInvest)
+
       // total invest
       totalInvest += investisment.mounthInvest + investisment.reinvest
       let ngxTotalInvest: NgxChartSeries = {
-        name: `${investisment.mounth.name} ${investisment.year}`,
+        name: `${investisment.mounth} ${investisment.year}`,
         value: totalInvest,
       }
       this.ngxArrayData[NgxDataTypeInvest.totalInvest].series.push(ngxTotalInvest)
@@ -52,7 +61,7 @@ export class NgxChartInvestClass {
       //total self invest
       totalSelfInvest += investisment.mounthInvest
       let ngxTotalSelfInvest: NgxChartSeries = {
-        name: `${investisment.mounth.name} ${investisment.year}`,
+        name: `${investisment.mounth} ${investisment.year}`,
         value: totalSelfInvest,
       }
       this.ngxArrayData[NgxDataTypeInvest.totalSelfInvest].series.push(ngxTotalSelfInvest)
@@ -60,7 +69,7 @@ export class NgxChartInvestClass {
       // total gain
       totalGain += investisment.gain
       let ngxTotalGain: NgxChartSeries = {
-        name: `${investisment.mounth.name} ${investisment.year}`,
+        name: `${investisment.mounth} ${investisment.year}`,
         value: totalGain,
       }
       this.ngxArrayData[NgxDataTypeInvest.totalGain].series.push(ngxTotalGain)

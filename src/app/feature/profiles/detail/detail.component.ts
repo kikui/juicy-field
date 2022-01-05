@@ -4,6 +4,7 @@ import { DocumentData } from 'rxfire/firestore/interfaces';
 import { Observable } from 'rxjs';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { EnumSortType, Investisment, Profile } from 'src/app/core/models/profile';
+import { Mounth, oneYear } from 'src/app/core/models/year';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { NgxChartClass } from 'src/app/core/services/ngx-chart';
 import { NgxChartInvestClass } from 'src/app/core/services/ngx-chart-invest';
@@ -86,19 +87,29 @@ export class ProfilesDetailComponent implements OnInit {
   }
 
   sortMyInvestisment(a: Investisment, b: Investisment, type: EnumSortType) {
+    let aMounth = this.getMounth(a.mounth)
+    let bMounth = this.getMounth(b.mounth)
     if(type == EnumSortType.DESC) {
       if (a.year == b.year) {
-        return a.mounth.position < b.mounth.position ? 1 : -1
+        return aMounth.position < bMounth.position ? 1 : -1
       } 
       return a.year < b.year ? 1 : -1
     } else if (type == EnumSortType.ASC) {
       if (a.year == b.year) {
-        return a.mounth.position > b.mounth.position ? 1 : -1
+        return aMounth.position > bMounth.position ? 1 : -1
       } 
       return a.year > b.year ? 1 : -1
     } else {
       return 0
     }
+  }
+
+  getMounth(mounthName: string): Mounth {
+    let mounthTarget = null
+    for(let i = 0; i < oneYear.length; i++) {
+      if (oneYear[i].name == mounthName) mounthTarget = oneYear[i]
+    }
+    return mounthTarget!
   }
 
   /* 

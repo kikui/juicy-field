@@ -19,6 +19,8 @@ export class InvestismentComponent implements OnInit {
   @Input() myInvestisment: Array<Investisment> = []
   displayedColumns = ["year", "mounth", "mounthInvest", "rentMounth", "reinvest", "gain", "action"]
 
+  oneYear = oneYear
+
   // ngx-chart options
   legend: boolean = true;
   legendPosition: LegendPosition = LegendPosition.Below
@@ -43,7 +45,7 @@ export class InvestismentComponent implements OnInit {
   }
 
   addEntrie() {
-    this.myInvestisment.unshift({year: 2022, mounth: oneYear[0], mounthInvest: 0, rentMounth: 0, reinvest: 0, gain: 0})
+    this.myInvestisment.unshift({year: 2022, mounth: oneYear[0].name, mounthInvest: 0, rentMounth: 0, reinvest: 0, gain: 0})
     this.myInvestisment = [...this.myInvestisment]
   }
 

@@ -33,5 +33,6 @@ export enum NgxDataType {
 export enum NgxDataTypeInvest {
   totalInvest,
   totalSelfInvest,
-  totalGain
+  currentInvest,
+  totalGain,
 }

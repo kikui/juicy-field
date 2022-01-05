@@ -17,7 +17,7 @@ export interface Estimate {
 
 export interface Investisment {
   year: number;
-  mounth: Mounth;
+  mounth: string;
   mounthInvest: number;
   rentMounth: number;
   reinvest: number;
