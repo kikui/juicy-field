@@ -18,13 +18,27 @@ export interface PartialReinvest {
 }
 
 export interface InvestParams {
-  investLoanning: number;
-  loanningTimeRefund: number;
-  investStarter: number;
-  investByMounth: number;
-  investTypeId: string;
   yearsGeneration: number;
-  ponctualInvest: string;
+  investTypeId: string;
+  ponctualInvests: Array<PonctualInvest>;
+  recurrentInvests: Array<RecurrentInvest>;
+}
+
+export interface RecurrentInvest {
+  startIndex: number;
+  amount: number;
+  frequency: number;
+}
+
+export interface PonctualInvest {
+  amount: number;
+  index: number;
+  indexRefund: number;
+}
+
+export enum EnumInvestType {
+  recurrentInvest,
+  ponctualInvest
 }
 
 export interface DisplayPanel {

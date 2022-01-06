@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { DisplayPanel, InvestParams, PartialReinvest } from 'src/app/core/models/invest-type';
+import { DisplayPanel, EnumInvestType, InvestParams, PartialReinvest } from 'src/app/core/models/invest-type';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { investTypeData } from '../../core/models/invest-type';
@@ -17,13 +17,10 @@ export class EstimateComponent implements OnInit {
 
   // input
   @Input() investParams: InvestParams = {
-    investLoanning: 0,
-    loanningTimeRefund: 0,
-    investStarter: 0,
-    investByMounth: 50,
     investTypeId: "0",
     yearsGeneration: 1,
-    ponctualInvest: ""
+    ponctualInvests: [],
+    recurrentInvests: []
   }
   @Input() partialReinvest: PartialReinvest = {
     percent: 100,
@@ -41,9 +38,14 @@ export class EstimateComponent implements OnInit {
     benefit: true
   }
 
+  // table params
+  recurrentInvestDisplayedColumns = ["amount", "frequency", "startIndex", "action"]
+  ponctualInvestDisplayedColumns =["amount", "index", "indexRefund", "action"]
+
   // Enum && Data declaration
   investTypeData = investTypeData
   oneYear = oneYear
+  EnumInvestType = EnumInvestType
 
   // ngx-chart data default
   ngxArrayData: Array<NgxChart> = []
@@ -76,6 +78,36 @@ export class EstimateComponent implements OnInit {
       displayPanel: this.displayPanel
     }
     this.submit.emit(myEstimate)
+  }
+
+  addEntrie(enumInvestType: EnumInvestType) {
+    switch (enumInvestType) {
+      case EnumInvestType.recurrentInvest:
+        this.investParams.recurrentInvests.unshift({amount: 0, frequency: 0, startIndex: 0})
+        this.investParams.recurrentInvests = [...this.investParams.recurrentInvests]
+        break;
+      case EnumInvestType.ponctualInvest:
+        this.investParams.ponctualInvests.unshift({amount: 0, index: 0, indexRefund: 0})
+        this.investParams.ponctualInvests = [...this.investParams.ponctualInvests]
+        break;
+      default:
+        break;
+    }
+  }
+
+  deleteEntrie(enumInvestType: EnumInvestType, index: number) {
+    switch (enumInvestType) {
+      case EnumInvestType.recurrentInvest:
+        this.investParams.recurrentInvests.splice(index, 1)
+        this.investParams.recurrentInvests = [...this.investParams.recurrentInvests]
+        break;
+      case EnumInvestType.ponctualInvest:
+        this.investParams.ponctualInvests.splice(index, 1)
+        this.investParams.ponctualInvests = [...this.investParams.ponctualInvests]
+        break;
+      default:
+        break;
+    }
   }
 
   recalculate() {

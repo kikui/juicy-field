@@ -15,13 +15,10 @@ export class DialogProfilesCreate {
     imageUrl: "",
     myEstimate: {
       investParams: {
-        investLoanning: 0,
-        loanningTimeRefund: 0,
-        investStarter: 0,
-        investByMounth: 0,
         investTypeId: "0",
         yearsGeneration: 1,
-        ponctualInvest: ""
+        ponctualInvests: [{amount: 0, index: 0, indexRefund: 0}],
+        recurrentInvests: [{amount: 0, frequency: 0, startIndex: 0}]
       },
       partialReinvest: {
         percent: 100,

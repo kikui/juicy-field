@@ -1,4 +1,4 @@
-import { DisplayPanel, InvestParams, InvestType, investTypeData, PartialReinvest } from "../models/invest-type";
+import { DisplayPanel, InvestParams, InvestType, investTypeData, PartialReinvest, PonctualInvest, RecurrentInvest } from "../models/invest-type";
 import { GrowingPlant, NgxChart, NgxChartSeries, NgxDataType } from "../models/ngx-chart";
 import { Mounth, oneYear } from "../models/year";
 import { NgxChartCore } from "./ngx-chart-core";
@@ -81,7 +81,7 @@ export class NgxChartClass extends NgxChartCore {
 
     this.years.forEach((mounth: Mounth, index: number) => {
       if (index % 12 == 0 && index != 0) currentYear++
-      let name = `${currentYear}${mounth.name} (${index + 1})`
+      let name = `${currentYear}${mounth.name} (${index})`
       let targetMounthIndex = this.getTargetMounthIndex(investTypeTarget, index)
       let reinvest = 0
       let nbPlantToRentWithMounth = 0
@@ -134,7 +134,7 @@ export class NgxChartClass extends NgxChartCore {
       this.ngxArrayPush(name, benefice, NgxDataType.benefit)
 
       // current invest
-      this.ngxArrayPush(name, totalReinvest, NgxDataType.currentInvest)
+      this.ngxArrayPush(name, totalReinvestWithLastMounthRest, NgxDataType.currentInvest)
 
       // currentPlantPaid
       this.ngxArrayPush(name, totalNbPlantPaid, NgxDataType.currentPlantPaid)
@@ -152,26 +152,29 @@ export class NgxChartClass extends NgxChartCore {
   calculateTotals(index: number, totalInvest: number, totalMySelfInvest: number, reinvest: number, gain: number) {
     let totalReinvest = 0
     let totalReinvestWithLastMounthRest = 0
-    if (index == 0 && (this.investParams.investStarter > 0 || this.investParams.investLoanning > 0)) {
-      let firstInvest = this.investParams.investStarter + this.investParams.investLoanning
-      totalReinvest += firstInvest
-      totalInvest += firstInvest
-      totalMySelfInvest += firstInvest
-      if (index == this.investParams.loanningTimeRefund) {
-        totalInvest -= this.investParams.investLoanning
-        totalReinvest -= this.investParams.investLoanning
-        totalMySelfInvest -= this.investParams.investLoanning
+    // loop on recurrentInvest
+    this.investParams.recurrentInvests.forEach((rencurrentInvest: RecurrentInvest) => {
+      if(index < rencurrentInvest.startIndex) return
+      let exactIndex = index - rencurrentInvest.startIndex
+      if(exactIndex%rencurrentInvest.frequency != 0) return
+      totalReinvest += rencurrentInvest.amount
+      totalInvest += rencurrentInvest.amount
+      totalMySelfInvest += rencurrentInvest.amount
+    })
+    // loop on ponctualInvest
+    this.investParams.ponctualInvests.forEach((ponctualInvest: PonctualInvest) => {
+      if (ponctualInvest.indexRefund == index && index > 0) {
+        totalReinvest -= ponctualInvest.amount
+        totalInvest -= ponctualInvest.amount
+        totalMySelfInvest -= ponctualInvest.amount
+      } else if (ponctualInvest.index == index) {
+        totalReinvest += ponctualInvest.amount
+        totalInvest += ponctualInvest.amount
+        totalMySelfInvest += ponctualInvest.amount
       }
-    } else {
-      if (index == this.investParams.loanningTimeRefund) {
-        totalInvest -= this.investParams.investLoanning
-        totalReinvest -= this.investParams.investLoanning
-        totalMySelfInvest -= this.investParams.investLoanning
-      }
-      totalReinvest += this.investParams.investByMounth + reinvest
-      totalInvest += totalReinvest
-      totalMySelfInvest += this.investParams.investByMounth
-    }
+    })
+    totalInvest += reinvest
+    totalReinvest += reinvest
     totalReinvestWithLastMounthRest = totalReinvest
     if (index > 0) totalReinvestWithLastMounthRest += this.ngxArrayData[NgxDataType.totalInvest].series[index - 1].meta?.resteInvest || 0
     totalInvest -= gain
