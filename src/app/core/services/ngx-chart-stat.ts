@@ -2,16 +2,15 @@ import { InvestType, investTypeData } from "../models/invest-type";
 import { NgxChart, NgxChartSeries, NgxDataType, NgxDataTypeInvest, NgxDataTypeStat } from "../models/ngx-chart";
 import { Investisment } from "../models/profile";
 import { oneYear } from "../models/year";
+import { NgxChartCore } from "./ngx-chart-core";
 
-export class NgxChartStatClass {
+export class NgxChartStatClass extends NgxChartCore {
   // variables
   myInvestisment: Array<Investisment>
   investType: InvestType
 
-  // options
-  ngxArrayData: Array<NgxChart>;
-
   constructor(myInvestisment: Array<Investisment>, investType: InvestType) {
+    super()
     this.myInvestisment = myInvestisment
     this.investType = investType
     this.ngxArrayData = [
@@ -24,12 +23,6 @@ export class NgxChartStatClass {
     this.investType = investType
   }
 
-  resetData() {
-    this.ngxArrayData.forEach((e) => {
-      e.series = []
-    })
-  }
-
   recalculate(myInvestisment: Array<Investisment>, investType: InvestType) {
     this.resetData()
     this.setParams(myInvestisment, investType)
@@ -38,41 +31,15 @@ export class NgxChartStatClass {
 
   calculMyInvest() {
     this.myInvestisment.forEach((investisment: Investisment, index: number) => {
+      let name = `${investisment.mounth} ${investisment.year}`
       let targetMounth = this.getTargetMounthIndex(this.investType, index)
       if (targetMounth < 0) return
 
       let targetMounthPay = this.myInvestisment[targetMounth].mounthInvest + this.myInvestisment[targetMounth].reinvest
-      let currentRentability = 100 * investisment.reinvest / targetMounthPay - 100
-      let ngxCurrentInvest: NgxChartSeries = {
-        name: `${investisment.mounth} ${investisment.year}`,
-        value: currentRentability,
-      }
-      this.ngxArrayData[NgxDataTypeStat.currentRentability].series.push(ngxCurrentInvest)
-    })
-  }
+      let currentRentability = 100 * investisment.currentRent / targetMounthPay - 100
 
-  getTargetMounthIndex(investType: InvestType, currentIndex: number): number {
-    let growingPeriodInMonth = 0
-    if (investType.growingPeriod) {
-      growingPeriodInMonth = 12 / this.getMounthCountByGrowingPeriod(investType.growingPeriod)
-    } else {
-      growingPeriodInMonth = 12 / investType.harvestPerYear
-    }
-    return currentIndex - growingPeriodInMonth
-  }
-
-  getMounthCountByGrowingPeriod(growingPeriod: number): number {
-    let count = 0
-    let isFind = false
-    let indexTarget = 0
-    oneYear.forEach((mounth, index) => {
-      if (count > growingPeriod && isFind == false) {
-        indexTarget = index - 1
-        isFind = true
-      }
-      count += mounth.nbDay
+      this.ngxArrayPush(name, currentRentability, NgxDataTypeStat.currentRentability)
     })
-    return indexTarget
   }
 }
 

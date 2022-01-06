@@ -35,6 +35,7 @@ export enum NgxDataType {
 export enum NgxDataTypeInvest {
   totalInvest,
   totalSelfInvest,
+  benefit,
   currentInvest,
   totalGain,
 }

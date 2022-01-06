@@ -1,32 +1,26 @@
 import { investTypeData } from "../models/invest-type";
 import { NgxChart, NgxChartSeries, NgxDataType, NgxDataTypeInvest } from "../models/ngx-chart";
 import { Investisment } from "../models/profile";
+import { NgxChartCore } from "./ngx-chart-core";
 
-export class NgxChartInvestClass {
+export class NgxChartInvestClass extends NgxChartCore {
   // variables
   myInvestisment: Array<Investisment>
 
-  // options
-  ngxArrayData: Array<NgxChart>;
-
   constructor(myInvestisment: Array<Investisment>) {
+    super()
     this.myInvestisment = myInvestisment
     this.ngxArrayData = [
-      {name: "Total investi", series: []},
-      {name: "Total investi soi meme", series: []},
-      {name: "Investissement courant", series: []},
-      {name: "Total retrait", series: []},
+      { name: "Total investi", series: [] },
+      { name: "Total investi soi meme", series: [] },
+      { name: "Bénéfice", series: [] },
+      { name: "Investissement courant", series: [] },
+      { name: "Total retrait", series: [] },
     ]
   }
 
   setParams(myInvestisment: Array<Investisment>) {
     this.myInvestisment = myInvestisment
-  }
-
-  resetData() {
-    this.ngxArrayData.forEach((e) => {
-      e.series = []
-    })
   }
 
   recalculate(myInvestisment: Array<Investisment>) {
@@ -42,37 +36,46 @@ export class NgxChartInvestClass {
     let totalGain = 0
 
     this.myInvestisment.forEach((investisment: Investisment) => {
+      let name = `${investisment.mounth} ${investisment.year}`
       // current invest
       let currentInvest = investisment.mounthInvest + investisment.reinvest
-      let ngxCurrentInvest: NgxChartSeries = {
-        name: `${investisment.mounth} ${investisment.year}`,
-        value: currentInvest,
-      }
-      this.ngxArrayData[NgxDataTypeInvest.currentInvest].series.push(ngxCurrentInvest)
+      this.ngxArrayPush(
+        name,
+        currentInvest,
+        NgxDataTypeInvest.currentInvest
+      )
 
       // total invest
       totalInvest += investisment.mounthInvest + investisment.reinvest
-      let ngxTotalInvest: NgxChartSeries = {
-        name: `${investisment.mounth} ${investisment.year}`,
-        value: totalInvest,
-      }
-      this.ngxArrayData[NgxDataTypeInvest.totalInvest].series.push(ngxTotalInvest)
+      this.ngxArrayPush(
+        name,
+        totalInvest,
+        NgxDataTypeInvest.totalInvest
+      )
 
       //total self invest
       totalSelfInvest += investisment.mounthInvest
-      let ngxTotalSelfInvest: NgxChartSeries = {
-        name: `${investisment.mounth} ${investisment.year}`,
-        value: totalSelfInvest,
-      }
-      this.ngxArrayData[NgxDataTypeInvest.totalSelfInvest].series.push(ngxTotalSelfInvest)
+      this.ngxArrayPush(
+        name,
+        totalSelfInvest,
+        NgxDataTypeInvest.totalSelfInvest
+      )
+
+      // benefit 
+      let benefit = totalInvest - totalSelfInvest
+      this.ngxArrayPush(
+        name,
+        benefit,
+        NgxDataTypeInvest.benefit
+      )
 
       // total gain
       totalGain += investisment.gain
-      let ngxTotalGain: NgxChartSeries = {
-        name: `${investisment.mounth} ${investisment.year}`,
-        value: totalGain,
-      }
-      this.ngxArrayData[NgxDataTypeInvest.totalGain].series.push(ngxTotalGain)
+      this.ngxArrayPush(
+        name,
+        totalGain,
+        NgxDataTypeInvest.totalGain
+      )
     })
   }
 }
