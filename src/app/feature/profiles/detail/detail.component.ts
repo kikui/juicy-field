@@ -69,6 +69,7 @@ export class ProfilesDetailComponent implements OnInit {
       this.profile.myInvestisment.sort((a: Investisment, b: Investisment) => this.sortMyInvestisment(a, b, EnumSortType.DESC))
 
       // estimate recalcul
+      this.estimateComponent?.checkRecalculRevenu()
       setTimeout(() => this.estimateComponent?.recalculate(), 100);
       console.log(this.profile)
     })

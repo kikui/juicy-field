@@ -48,7 +48,7 @@
       </table>
     </div>
 
-    <div class="col-12 my-3 text-end"><span class="primary border-bottom border-secondary pb-1 ps-1">Paramètres d'investissement ponctuel</span></div>
+    <div class="col-12 my-3"><span class="primary border-bottom border-secondary pb-1 ps-1">Paramètres d'investissement ponctuel</span></div>
     <div class="container-table">
       <table mat-table [dataSource]="investParams.ponctualInvests" class="mat-elevation-z3 my-3 w-100">
         <ng-container matColumnDef="amount">
@@ -122,6 +122,12 @@
       <mat-label>Investissement Type</mat-label>
       <mat-select [(ngModel)]="investParams.investTypeId">
         <mat-option *ngFor="let investType of investTypeData" value="{{investType.id}}">{{investType.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field  class="col-6">
+      <mat-label>Rentabité de la plante (€)</mat-label>
+      <mat-select [(ngModel)]="investParams.plantRentabity">
+        <mat-option *ngFor="let amount of arrayInvestTypeRevenu" value="{{amount}}">{{amount}} € ({{100*amount/currentInvestType.price - 100}}%)</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field  class="col-6">

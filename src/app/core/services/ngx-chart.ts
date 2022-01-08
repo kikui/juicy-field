@@ -1,5 +1,5 @@
 import { DisplayPanel, InvestParams, InvestType, investTypeData, PartialReinvest, PonctualInvest, RecurrentInvest } from "../models/invest-type";
-import { GrowingPlant, NgxChart, NgxChartSeries, NgxDataType } from "../models/ngx-chart";
+import { GrowingPlant, NgxDataType } from "../models/ngx-chart";
 import { Mounth, oneYear } from "../models/year";
 import { NgxChartCore } from "./ngx-chart-core";
 
@@ -89,7 +89,7 @@ export class NgxChartClass extends NgxChartCore {
 
       if (targetMounthIndex >= 0) {
         nbPlantToRentWithMounth = this.ngxArrayData[NgxDataType.totalInvest].series[targetMounthIndex].meta?.nbPlantPaid || 0
-        let reinvestAndGain = this.calculateRent(index, investTypeTarget, nbPlantToRentWithMounth, targetMounthIndex)
+        let reinvestAndGain = this.calculateRent(index, nbPlantToRentWithMounth)
         reinvest = reinvestAndGain.reinvest
         gain = reinvestAndGain.gain
       }
@@ -104,7 +104,6 @@ export class NgxChartClass extends NgxChartCore {
       // calcul total
       let totalsObject = this.calculateTotals(index, totalInvest, totalMySelfInvest, reinvest, gain)
       let totalReinvest = totalsObject.totalReinvest
-      let totalReinvestWithLastMounthRest = totalsObject.totalReinvestWithLastMounthRest
       totalInvest = totalsObject.totalInvest
       totalMySelfInvest = totalsObject.totalMySelfInvest
 
@@ -116,9 +115,9 @@ export class NgxChartClass extends NgxChartCore {
       growingPlantHistory = this.clearGrowingHistory(investTypeTarget, growingPlantHistory)
 
       // feed growingPlant
-      let nbPlantPaid = Math.trunc(totalReinvestWithLastMounthRest / investTypeTarget.price)
+      let nbPlantPaid = Math.trunc(totalReinvest / investTypeTarget.price)
       let totalNbPlantPaid = nbPlantPaid + nbRepotPlant
-      let resteInvest = totalReinvestWithLastMounthRest - investTypeTarget.price * nbPlantPaid
+      let resteInvest = totalReinvest - investTypeTarget.price * nbPlantPaid
       if (nbPlantPaid > 0) growingPlantHistory.push({ nbPlant: nbPlantPaid, age: 0 })
 
       // total growing plant
@@ -134,7 +133,7 @@ export class NgxChartClass extends NgxChartCore {
       this.ngxArrayPush(name, benefice, NgxDataType.benefit)
 
       // current invest
-      this.ngxArrayPush(name, totalReinvestWithLastMounthRest, NgxDataType.currentInvest)
+      this.ngxArrayPush(name, totalReinvest, NgxDataType.currentInvest)
 
       // currentPlantPaid
       this.ngxArrayPush(name, totalNbPlantPaid, NgxDataType.currentPlantPaid)
@@ -151,7 +150,6 @@ export class NgxChartClass extends NgxChartCore {
 
   calculateTotals(index: number, totalInvest: number, totalMySelfInvest: number, reinvest: number, gain: number) {
     let totalReinvest = 0
-    let totalReinvestWithLastMounthRest = 0
     // loop on recurrentInvest
     this.investParams.recurrentInvests.forEach((rencurrentInvest: RecurrentInvest) => {
       if(index < rencurrentInvest.startIndex) return
@@ -175,12 +173,10 @@ export class NgxChartClass extends NgxChartCore {
     })
     totalInvest += reinvest
     totalReinvest += reinvest
-    totalReinvestWithLastMounthRest = totalReinvest
-    if (index > 0) totalReinvestWithLastMounthRest += this.ngxArrayData[NgxDataType.totalInvest].series[index - 1].meta?.resteInvest || 0
+    if (index > 0) totalReinvest += this.ngxArrayData[NgxDataType.totalInvest].series[index - 1].meta?.resteInvest || 0
     totalInvest -= gain
     return {
       totalReinvest: totalReinvest,
-      totalReinvestWithLastMounthRest: totalReinvestWithLastMounthRest,
       totalInvest: totalInvest,
       totalMySelfInvest: totalMySelfInvest
     }
@@ -221,15 +217,16 @@ export class NgxChartClass extends NgxChartCore {
     return investTypeData.find((e: InvestType) => e.id == id)!
   }
 
-  calculateRent(index: number, investTypeTarget: InvestType, nbPlantToRentWithMounth: number, targetMounthIndex: number) {
+  calculateRent(index: number, nbPlantToRentWithMounth: number) {
+    let rentAmount = parseInt(this.investParams.plantRentabity)
     let reinvest = 0
     let gain = 0
     if (index + 1 > this.partialReinvest.minimalTimeBeforeDrop && index % this.partialReinvest.frequency == 0) {
-      let potentialGain = nbPlantToRentWithMounth * investTypeTarget.revenue.minimal * ((100 - this.partialReinvest.percent) / 100)
+      let potentialGain = nbPlantToRentWithMounth * rentAmount * ((100 - this.partialReinvest.percent) / 100)
       gain = potentialGain > this.partialReinvest.maxRentDrop && this.partialReinvest.maxRentDrop != 0 ? this.partialReinvest.maxRentDrop : potentialGain
-      reinvest = nbPlantToRentWithMounth * investTypeTarget.revenue.minimal * (this.partialReinvest.percent / 100) + potentialGain - gain
+      reinvest = nbPlantToRentWithMounth * rentAmount * (this.partialReinvest.percent / 100) + potentialGain - gain
     } else {
-      reinvest = nbPlantToRentWithMounth * investTypeTarget.revenue.minimal
+      reinvest = nbPlantToRentWithMounth * rentAmount
     }
     return { reinvest: reinvest, gain: gain }
   }

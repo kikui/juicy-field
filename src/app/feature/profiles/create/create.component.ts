@@ -17,6 +17,7 @@ export class DialogProfilesCreate {
       investParams: {
         investTypeId: "0",
         yearsGeneration: 1,
+        plantRentabity: "68",
         ponctualInvests: [{amount: 0, index: 0, indexRefund: 0}],
         recurrentInvests: [{amount: 0, frequency: 0, startIndex: 0}]
       },

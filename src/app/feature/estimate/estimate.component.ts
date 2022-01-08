@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { DisplayPanel, EnumInvestType, InvestParams, PartialReinvest } from 'src/app/core/models/invest-type';
+import { Component, ElementRef, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck } from '@angular/core';
+import { DisplayPanel, EnumInvestType, InvestParams, InvestType, PartialReinvest } from 'src/app/core/models/invest-type';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { investTypeData } from '../../core/models/invest-type';
@@ -11,7 +11,7 @@ import { NgxChartClass } from 'src/app/core/services/ngx-chart';
   templateUrl: './estimate.component.html',
   styleUrls: ['./estimate.component.scss']
 })
-export class EstimateComponent implements OnInit {
+export class EstimateComponent implements OnInit, DoCheck {
   // output
   @Output() submit = new EventEmitter();
 
@@ -19,6 +19,7 @@ export class EstimateComponent implements OnInit {
   @Input() investParams: InvestParams = {
     investTypeId: "0",
     yearsGeneration: 1,
+    plantRentabity: "68",
     ponctualInvests: [],
     recurrentInvests: []
   }
@@ -37,6 +38,9 @@ export class EstimateComponent implements OnInit {
     totalSelfInvest: true,
     benefit: true
   }
+
+  currentInvestType: InvestType = investTypeData[0]
+  arrayInvestTypeRevenu: Array<number> = []
 
   // table params
   recurrentInvestDisplayedColumns = ["amount", "frequency", "startIndex", "action"]
@@ -69,7 +73,16 @@ export class EstimateComponent implements OnInit {
     this.currentCalcul = new NgxChartClass(this.investParams, this.partialReinvest, this.displayPanel)
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    let currentInvestType = this.currentCalcul.getInvestTypeData(parseInt(this.investParams.investTypeId))
+    this.calculateRevenu(currentInvestType)
+  }
+
+  ngDoCheck(): void {
+    if(this.currentInvestType.id != parseInt(this.investParams.investTypeId)) {
+      this.checkRecalculRevenu()
+    }
+  }
 
   save() {
     let myEstimate = {
@@ -120,6 +133,18 @@ export class EstimateComponent implements OnInit {
 
   window(): any {
     return window;
+  }
+
+  calculateRevenu(currentInvestType: InvestType) {
+    this.arrayInvestTypeRevenu = []
+    for(let i = currentInvestType.revenue.minimal; i <= currentInvestType.revenue.maximal; i++) {
+      this.arrayInvestTypeRevenu.push(i)
+    }
+  }
+
+  checkRecalculRevenu() {
+    this.currentInvestType = this.currentCalcul.getInvestTypeData(parseInt(this.investParams.investTypeId))
+    this.calculateRevenu(this.currentInvestType)
   }
 
 }

@@ -1,5 +1,3 @@
-import { Revenue } from "./revenue";
-
 export interface InvestType {
   id: number;
   name: string;
@@ -8,6 +6,11 @@ export interface InvestType {
   businessPlan: number;
   revenue: Revenue;
   price: number
+}
+
+export interface Revenue {
+  minimal: number;
+  maximal: number
 }
 
 export interface PartialReinvest {
@@ -20,6 +23,7 @@ export interface PartialReinvest {
 export interface InvestParams {
   yearsGeneration: number;
   investTypeId: string;
+  plantRentabity: string;
   ponctualInvests: Array<PonctualInvest>;
   recurrentInvests: Array<RecurrentInvest>;
 }

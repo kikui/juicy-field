@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { investTypeData } from 'src/app/core/models/invest-type';
-import { NgxChart } from 'src/app/core/models/ngx-chart';
+import { NgxChart, NgxChartSeries, NgxDataTypeStat } from 'src/app/core/models/ngx-chart';
 import { Investisment } from 'src/app/core/models/profile';
 import { NgxChartStatClass } from 'src/app/core/services/ngx-chart-stat';
 
@@ -36,12 +36,18 @@ export class StatisticComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.currentStatCalcul.calculMyInvest()
     this.myStatGraph = [...this.currentStatCalcul.ngxArrayData]
-    console.log(this.myStatGraph)
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.currentStatCalcul.recalculate(changes['myInvestisment'].currentValue, investTypeData[0])
     this.myStatGraph = [...this.currentStatCalcul.ngxArrayData]
+    if(this.myStatGraph[NgxDataTypeStat.currentRentability].series.length == 0) {
+      this.setDefaultData()
+    }
+  } 
+
+  setDefaultData() {
+    this.currentStatCalcul.ngxArrayPush("défaut", 0, NgxDataTypeStat.currentRentability)
   }
 
   window(): any {
