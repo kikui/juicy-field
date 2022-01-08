@@ -21,7 +21,8 @@ export class EstimateComponent implements OnInit, DoCheck {
     yearsGeneration: 1,
     plantRentabity: "68",
     ponctualInvests: [],
-    recurrentInvests: []
+    recurrentInvests: [],
+    ponctualDrops: []
   }
   @Input() partialReinvest: PartialReinvest = {
     percent: 100,
@@ -44,7 +45,8 @@ export class EstimateComponent implements OnInit, DoCheck {
 
   // table params
   recurrentInvestDisplayedColumns = ["amount", "frequency", "startIndex", "action"]
-  ponctualInvestDisplayedColumns =["amount", "index", "indexRefund", "action"]
+  ponctualInvestDisplayedColumns = ["amount", "index", "indexRefund", "action"]
+  ponctualDropDisplayedColumns = ["percent", "index", "action"]
 
   // Enum && Data declaration
   investTypeData = investTypeData
@@ -103,6 +105,10 @@ export class EstimateComponent implements OnInit, DoCheck {
         this.investParams.ponctualInvests.unshift({amount: 0, index: 0, indexRefund: 0})
         this.investParams.ponctualInvests = [...this.investParams.ponctualInvests]
         break;
+      case EnumInvestType.ponctualDrop:
+          this.investParams.ponctualDrops.unshift({percent: 0, index: 0})
+          this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
+          break;
       default:
         break;
     }
@@ -118,6 +124,10 @@ export class EstimateComponent implements OnInit, DoCheck {
         this.investParams.ponctualInvests.splice(index, 1)
         this.investParams.ponctualInvests = [...this.investParams.ponctualInvests]
         break;
+      case EnumInvestType.ponctualDrop:
+          this.investParams.ponctualDrops.splice(index, 1)
+          this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
+          break;
       default:
         break;
     }

@@ -20,12 +20,19 @@ export interface PartialReinvest {
   frequency: number
 }
 
+
 export interface InvestParams {
   yearsGeneration: number;
   investTypeId: string;
   plantRentabity: string;
   ponctualInvests: Array<PonctualInvest>;
   recurrentInvests: Array<RecurrentInvest>;
+  ponctualDrops: Array<RentDrop>
+}
+
+export interface RentDrop {
+  index: number;
+  percent: number;
 }
 
 export interface RecurrentInvest {
@@ -42,7 +49,8 @@ export interface PonctualInvest {
 
 export enum EnumInvestType {
   recurrentInvest,
-  ponctualInvest
+  ponctualInvest,
+  ponctualDrop
 }
 
 export interface DisplayPanel {

@@ -19,7 +19,8 @@ export class DialogProfilesCreate {
         yearsGeneration: 1,
         plantRentabity: "68",
         ponctualInvests: [{amount: 0, index: 0, indexRefund: 0}],
-        recurrentInvests: [{amount: 0, frequency: 0, startIndex: 0}]
+        recurrentInvests: [{amount: 0, frequency: 0, startIndex: 0}],
+        ponctualDrops: [{index: 0, percent: 0}]
       },
       partialReinvest: {
         percent: 100,
