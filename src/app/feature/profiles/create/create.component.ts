@@ -18,24 +18,19 @@ export class DialogProfilesCreate {
         investTypeId: "0",
         yearsGeneration: 1,
         plantRentabity: "68",
-        ponctualInvests: [{amount: 0, index: 0, indexRefund: 0}],
-        recurrentInvests: [{amount: 0, frequency: 0, startIndex: 0}],
-        ponctualDrops: [{index: 0, percent: 0}]
-      },
-      partialReinvest: {
-        percent: 100,
-        maxRentDrop: 0,
-        minimalTimeBeforeDrop: 0,
-        frequency: 1
+        ponctualInvests: [{amount: 0, index: 0, indexRefund: 0, isActive: true}],
+        recurrentInvests: [{amount: 0, frequency: 0, startIndex: 0, isActive: true}],
+        ponctualDrops: [{index: 0, amount: 0, isActive: true}]
       },
       displayPanel: {
         totalInvest: true,
-        realProfit: false,
+        drop: true,
         currentPlantPaid: true,
         totalPlantInGrowing: false,
         currentRent: false,
         totalSelfInvest: true,
-        benefit: true
+        benefit: true,
+        finalBenefit: true
       }
     },
     myInvestisment: [{year: 2022, mounth: oneYear[0].name, mounthInvest: 0, currentRent: 0, reinvest: 0, gain: 0}]

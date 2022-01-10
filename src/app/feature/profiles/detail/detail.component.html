@@ -2,7 +2,6 @@
   <mat-tab label="Mon estimation">
     <app-estimate #estimateComponent
       [investParams]="profile.myEstimate.investParams" 
-      [partialReinvest]="profile.myEstimate.partialReinvest" 
       [displayPanel]="profile.myEstimate.displayPanel"
       (submit)="setParamsFromEstimate($event)">
     </app-estimate>

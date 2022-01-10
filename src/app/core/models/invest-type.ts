@@ -13,38 +13,33 @@ export interface Revenue {
   maximal: number
 }
 
-export interface PartialReinvest {
-  percent: number;
-  maxRentDrop: number;
-  minimalTimeBeforeDrop: number;
-  frequency: number
-}
-
-
 export interface InvestParams {
   yearsGeneration: number;
   investTypeId: string;
   plantRentabity: string;
   ponctualInvests: Array<PonctualInvest>;
   recurrentInvests: Array<RecurrentInvest>;
-  ponctualDrops: Array<RentDrop>
+  ponctualDrops: Array<PonctualDrop>
 }
 
-export interface RentDrop {
+export interface PonctualDrop {
   index: number;
-  percent: number;
+  amount: number;
+  isActive: boolean;
 }
 
 export interface RecurrentInvest {
   startIndex: number;
   amount: number;
   frequency: number;
+  isActive: boolean;
 }
 
 export interface PonctualInvest {
   amount: number;
   index: number;
   indexRefund: number;
+  isActive: boolean;
 }
 
 export enum EnumInvestType {
@@ -55,12 +50,13 @@ export enum EnumInvestType {
 
 export interface DisplayPanel {
   totalInvest: boolean;
-  realProfit: boolean;
+  drop: boolean;
   currentPlantPaid: boolean;
   totalPlantInGrowing: boolean;
   currentRent: boolean;
   totalSelfInvest: boolean;
   benefit: boolean;
+  finalBenefit: boolean;
 }
 
 export var investTypeData: Array<InvestType> = [

@@ -25,8 +25,8 @@ export enum NgxDataType {
   currentInvest,
   currentRent,
   benefit,
-  profit,
-  realProfit,
+  finalBenefit,
+  drop,
   currentPlantPaid,
   totalPlantInGrowing,
   benefitFinal

@@ -1,4 +1,4 @@
-import { DisplayPanel, InvestParams, PartialReinvest } from "./invest-type";
+import { DisplayPanel, InvestParams } from "./invest-type";
 import { Mounth } from "./year";
 
 export interface Profile {
@@ -11,7 +11,6 @@ export interface Profile {
 
 export interface Estimate {
   investParams: InvestParams;
-  partialReinvest: PartialReinvest;
   displayPanel: DisplayPanel;
 }
 

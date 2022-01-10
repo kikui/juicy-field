@@ -1,4 +1,4 @@
-import { DisplayPanel, InvestParams, InvestType, investTypeData, PartialReinvest, PonctualInvest, RecurrentInvest } from "../models/invest-type";
+import { DisplayPanel, InvestParams, InvestType, investTypeData, PonctualDrop, PonctualInvest, RecurrentInvest } from "../models/invest-type";
 import { GrowingPlant, NgxDataType } from "../models/ngx-chart";
 import { Mounth, oneYear } from "../models/year";
 import { NgxChartCore } from "./ngx-chart-core";
@@ -6,13 +6,13 @@ import { NgxChartCore } from "./ngx-chart-core";
 export class NgxChartClass extends NgxChartCore {
   // variables
   investParams: InvestParams;
-  partialReinvest: PartialReinvest;
   displayPanel: DisplayPanel;
 
   // options
   years: Array<Mounth>;
+  taxe = 0.3;
 
-  constructor(investParams: InvestParams, partialReinvest: PartialReinvest, displayPanel: DisplayPanel) {
+  constructor(investParams: InvestParams, displayPanel: DisplayPanel) {
     super()
     // options
     this.years = []
@@ -20,15 +20,14 @@ export class NgxChartClass extends NgxChartCore {
 
     // variables
     this.investParams = investParams
-    this.partialReinvest = partialReinvest
     this.ngxArrayData = [
       { name: "Total investi", series: [] },
       { name: "Total investi soi meme", series: [] },
       { name: "Investissement courant", series: [] },
       { name: "Rentrée courante", series: [] },
       { name: "Bénéfice", series: [] },
-      { name: "Profit retiré", series: [] },
-      { name: "Profit réel", series: [] },
+      { name: "Bénéfice final", series: [] },
+      { name: "Retrait", series: [] },
       { name: "Plante courante payé", series: [] },
       { name: "Total plante en croissance", series: [] },
     ]
@@ -36,9 +35,8 @@ export class NgxChartClass extends NgxChartCore {
     this.calculateYear()
   }
 
-  setParams(investParams: InvestParams, partialReinvest: PartialReinvest, displayPanel: DisplayPanel) {
+  setParams(investParams: InvestParams, displayPanel: DisplayPanel) {
     this.investParams = investParams
-    this.partialReinvest = partialReinvest
     this.displayPanel = displayPanel
   }
 
@@ -60,16 +58,13 @@ export class NgxChartClass extends NgxChartCore {
 
   applyFilter() {
     if (!this.displayPanel.totalInvest) this.ngxArrayData[NgxDataType.totalInvest].series = []
-    if (!this.displayPanel.realProfit) this.ngxArrayData[NgxDataType.realProfit].series = []
+    if (!this.displayPanel.drop) this.ngxArrayData[NgxDataType.drop].series = []
     if (!this.displayPanel.currentPlantPaid) this.ngxArrayData[NgxDataType.currentPlantPaid].series = []
     if (!this.displayPanel.totalPlantInGrowing) this.ngxArrayData[NgxDataType.totalPlantInGrowing].series = []
     if (!this.displayPanel.currentRent) this.ngxArrayData[NgxDataType.currentRent].series = []
     if (!this.displayPanel.totalSelfInvest) this.ngxArrayData[NgxDataType.totalSelfInvest].series = []
     if (!this.displayPanel.benefit) this.ngxArrayData[NgxDataType.benefit].series = []
-    if (this.partialReinvest.percent == 100) {
-      this.ngxArrayData[NgxDataType.profit].series = []
-      this.ngxArrayData[NgxDataType.realProfit].series = []
-    }
+    if (!this.displayPanel.finalBenefit) this.ngxArrayData[NgxDataType.finalBenefit].series = []
   }
 
   calculateNgxArrayData() {
@@ -85,24 +80,23 @@ export class NgxChartClass extends NgxChartCore {
       let targetMounthIndex = this.getTargetMounthIndex(investTypeTarget, index)
       let reinvest = 0
       let nbPlantToRentWithMounth = 0
-      let gain = 0
+      let drop = 0
 
       if (targetMounthIndex >= 0) {
         nbPlantToRentWithMounth = this.ngxArrayData[NgxDataType.totalInvest].series[targetMounthIndex].meta?.nbPlantPaid || 0
         let reinvestAndGain = this.calculateRent(index, nbPlantToRentWithMounth)
         reinvest = reinvestAndGain.reinvest
-        gain = reinvestAndGain.gain
+        drop = reinvestAndGain.drop
       }
 
-      // profit
-      this.ngxArrayPush(name, gain, NgxDataType.profit)
-      // real benefit
-      this.ngxArrayPush(name, gain * 0.7, NgxDataType.realProfit)
       // current rent
       this.ngxArrayPush(name, reinvest, NgxDataType.currentRent)
 
+      // current drop
+      this.ngxArrayPush(name, drop, NgxDataType.drop)
+
       // calcul total
-      let totalsObject = this.calculateTotals(index, totalInvest, totalMySelfInvest, reinvest, gain)
+      let totalsObject = this.calculateTotals(index, totalInvest, totalMySelfInvest, reinvest)
       let totalReinvest = totalsObject.totalReinvest
       totalInvest = totalsObject.totalInvest
       totalMySelfInvest = totalsObject.totalMySelfInvest
@@ -132,6 +126,10 @@ export class NgxChartClass extends NgxChartCore {
       let benefice = totalInvest - totalMySelfInvest
       this.ngxArrayPush(name, benefice, NgxDataType.benefit)
 
+      // final benefit
+      let finalBenefice = benefice * (1 - this.taxe)
+      this.ngxArrayPush(name, finalBenefice, NgxDataType.finalBenefit)
+
       // current invest
       this.ngxArrayPush(name, totalReinvest, NgxDataType.currentInvest)
 
@@ -148,11 +146,12 @@ export class NgxChartClass extends NgxChartCore {
     return totalPlantInGrowing
   }
 
-  calculateTotals(index: number, totalInvest: number, totalMySelfInvest: number, reinvest: number, gain: number) {
+  calculateTotals(index: number, totalInvest: number, totalMySelfInvest: number, reinvest: number) {
     let totalReinvest = 0
     // loop on recurrentInvest
     this.investParams.recurrentInvests.forEach((rencurrentInvest: RecurrentInvest) => {
       if(index < rencurrentInvest.startIndex) return
+      if(!rencurrentInvest.isActive) return
       let exactIndex = index - rencurrentInvest.startIndex
       if(exactIndex%rencurrentInvest.frequency != 0) return
       totalReinvest += rencurrentInvest.amount
@@ -161,9 +160,8 @@ export class NgxChartClass extends NgxChartCore {
     })
     // loop on ponctualInvest
     this.investParams.ponctualInvests.forEach((ponctualInvest: PonctualInvest) => {
+      if(!ponctualInvest.isActive) return
       if (ponctualInvest.indexRefund == index && index > 0) {
-        totalReinvest -= ponctualInvest.amount
-        totalInvest -= ponctualInvest.amount
         totalMySelfInvest -= ponctualInvest.amount
       } else if (ponctualInvest.index == index) {
         totalReinvest += ponctualInvest.amount
@@ -174,7 +172,6 @@ export class NgxChartClass extends NgxChartCore {
     totalInvest += reinvest
     totalReinvest += reinvest
     if (index > 0) totalReinvest += this.ngxArrayData[NgxDataType.totalInvest].series[index - 1].meta?.resteInvest || 0
-    totalInvest -= gain
     return {
       totalReinvest: totalReinvest,
       totalInvest: totalInvest,
@@ -219,16 +216,22 @@ export class NgxChartClass extends NgxChartCore {
 
   calculateRent(index: number, nbPlantToRentWithMounth: number) {
     let rentAmount = parseInt(this.investParams.plantRentabity)
-    let reinvest = 0
-    let gain = 0
-    if (index + 1 > this.partialReinvest.minimalTimeBeforeDrop && index % this.partialReinvest.frequency == 0) {
-      let potentialGain = nbPlantToRentWithMounth * rentAmount * ((100 - this.partialReinvest.percent) / 100)
-      gain = potentialGain > this.partialReinvest.maxRentDrop && this.partialReinvest.maxRentDrop != 0 ? this.partialReinvest.maxRentDrop : potentialGain
-      reinvest = nbPlantToRentWithMounth * rentAmount * (this.partialReinvest.percent / 100) + potentialGain - gain
-    } else {
-      reinvest = nbPlantToRentWithMounth * rentAmount
-    }
-    return { reinvest: reinvest, gain: gain }
+    let reinvest = nbPlantToRentWithMounth * rentAmount
+    let drop = 0
+    this.investParams.ponctualInvests.forEach((ponctualInvest: PonctualInvest) => {
+      if(!ponctualInvest.isActive) return
+      if (ponctualInvest.indexRefund == index && index > 0) {
+        drop += ponctualInvest.amount * (1+this.taxe)
+      }
+    })
+    this.investParams.ponctualDrops.forEach((ponctualDrop: PonctualDrop) => {
+      if(!ponctualDrop.isActive) return
+      if (ponctualDrop.index == index && index > 0) {
+        drop += ponctualDrop.amount * (1+this.taxe)
+      }
+    })
+    reinvest -= drop
+    return { reinvest: reinvest, drop: drop }
   }
 
 }

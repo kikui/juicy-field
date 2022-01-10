@@ -30,6 +30,12 @@
             </mat-form-field>
           </td>
         </ng-container>
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef>Activé ?</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <mat-checkbox class="" [(ngModel)]="investParams.recurrentInvests[i].isActive"></mat-checkbox>
+          </td>
+        </ng-container>
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>
             <div class="d-flex justify-content-center align-items-center">
@@ -75,6 +81,12 @@
             </mat-form-field>
           </td>
         </ng-container>
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef>Activé ?</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <mat-checkbox class="" [(ngModel)]="investParams.ponctualInvests[i].isActive"></mat-checkbox>
+          </td>
+        </ng-container>
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>
             <div class="d-flex justify-content-center align-items-center">
@@ -93,14 +105,14 @@
       </table>
     </div>
 
-    <div class="col-12 my-3"><span class="primary border-bottom border-secondary pb-1 ps-1">Retrait ponctuel (not yet implemented)</span></div>
+    <div class="col-12 my-3"><span class="primary border-bottom border-secondary pb-1 ps-1">Retrait ponctuel</span></div>
     <div class="container-table">
       <table mat-table [dataSource]="investParams.ponctualDrops" class="mat-elevation-z3 my-3 w-100">
         <ng-container matColumnDef="percent">
           <th mat-header-cell *matHeaderCellDef>Montant (€)</th>
           <td mat-cell *matCellDef="let element; let i = index">
             <mat-form-field>
-              <input matInput type="number" [(ngModel)]="investParams.ponctualDrops[i].percent"/>
+              <input matInput type="number" [(ngModel)]="investParams.ponctualDrops[i].amount"/>
             </mat-form-field>
           </td>
         </ng-container>
@@ -110,6 +122,12 @@
             <mat-form-field>
               <input matInput type="number" [(ngModel)]="investParams.ponctualDrops[i].index"/>
             </mat-form-field>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef>Activé ?</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <mat-checkbox class="" [(ngModel)]="investParams.ponctualDrops[i].isActive"></mat-checkbox>
           </td>
         </ng-container>
         <ng-container matColumnDef="action">
@@ -151,11 +169,12 @@
     <div class="col-12 text-center my-3"><span class="primary border-bottom border-secondary pb-1 px-1">Filtres</span></div>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalInvest"><span style="white-space: normal;">Total investi</span></mat-checkbox>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalSelfInvest"><span style="white-space: normal;">Total investi soi meme</span></mat-checkbox>
-    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.realProfit"><span style="white-space: normal;">Profit réel</span></mat-checkbox>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.drop"><span style="white-space: normal;">Retrait</span></mat-checkbox>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.currentRent"><span style="white-space: normal;">Rentrée courante</span></mat-checkbox>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.currentPlantPaid"><span style="white-space: normal;">Plante payé</span></mat-checkbox>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.totalPlantInGrowing"><span style="white-space: normal;">Plante total en croissance</span></mat-checkbox>
     <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.benefit"><span style="white-space: normal;">Bénéfice</span></mat-checkbox>
+    <mat-checkbox class="col-6 text-center mb-2" [(ngModel)]="displayPanel.finalBenefit"><span style="white-space: normal;">Bénéfice Réel</span></mat-checkbox>
     <div class="col-12 d-flex align-items-center justify-content-center">
       <button mat-raised-button color="primary" (click)="save()">Recalculer</button>
     </div>

@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck } from '@angular/core';
-import { DisplayPanel, EnumInvestType, InvestParams, InvestType, PartialReinvest } from 'src/app/core/models/invest-type';
+import { Component, ElementRef, Input, OnInit, Output, EventEmitter, DoCheck } from '@angular/core';
+import { DisplayPanel, EnumInvestType, InvestParams, InvestType } from 'src/app/core/models/invest-type';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { investTypeData } from '../../core/models/invest-type';
@@ -24,29 +24,24 @@ export class EstimateComponent implements OnInit, DoCheck {
     recurrentInvests: [],
     ponctualDrops: []
   }
-  @Input() partialReinvest: PartialReinvest = {
-    percent: 100,
-    maxRentDrop: 0,
-    minimalTimeBeforeDrop: 0,
-    frequency: 1
-  }
   @Input() displayPanel: DisplayPanel = {
     totalInvest: true,
-    realProfit: false,
+    drop: false,
     currentPlantPaid: true,
     totalPlantInGrowing: false,
     currentRent: false,
     totalSelfInvest: true,
-    benefit: true
+    benefit: true,
+    finalBenefit: true
   }
 
   currentInvestType: InvestType = investTypeData[0]
   arrayInvestTypeRevenu: Array<number> = []
 
   // table params
-  recurrentInvestDisplayedColumns = ["amount", "frequency", "startIndex", "action"]
-  ponctualInvestDisplayedColumns = ["amount", "index", "indexRefund", "action"]
-  ponctualDropDisplayedColumns = ["percent", "index", "action"]
+  recurrentInvestDisplayedColumns = ["amount", "frequency", "startIndex", "isActive", "action"]
+  ponctualInvestDisplayedColumns = ["amount", "index", "indexRefund", "isActive", "action"]
+  ponctualDropDisplayedColumns = ["percent", "index", "isActive", "action"]
 
   // Enum && Data declaration
   investTypeData = investTypeData
@@ -72,7 +67,7 @@ export class EstimateComponent implements OnInit, DoCheck {
   currentCalcul: any;
 
   constructor() {
-    this.currentCalcul = new NgxChartClass(this.investParams, this.partialReinvest, this.displayPanel)
+    this.currentCalcul = new NgxChartClass(this.investParams, this.displayPanel)
   }
 
   ngOnInit(): void {
@@ -89,7 +84,6 @@ export class EstimateComponent implements OnInit, DoCheck {
   save() {
     let myEstimate = {
       investParams: this.investParams,
-      partialReinvest: this.partialReinvest,
       displayPanel: this.displayPanel
     }
     this.submit.emit(myEstimate)
@@ -98,15 +92,15 @@ export class EstimateComponent implements OnInit, DoCheck {
   addEntrie(enumInvestType: EnumInvestType) {
     switch (enumInvestType) {
       case EnumInvestType.recurrentInvest:
-        this.investParams.recurrentInvests.unshift({amount: 0, frequency: 0, startIndex: 0})
+        this.investParams.recurrentInvests.unshift({amount: 0, frequency: 0, startIndex: 0, isActive: true})
         this.investParams.recurrentInvests = [...this.investParams.recurrentInvests]
         break;
       case EnumInvestType.ponctualInvest:
-        this.investParams.ponctualInvests.unshift({amount: 0, index: 0, indexRefund: 0})
+        this.investParams.ponctualInvests.unshift({amount: 0, index: 0, indexRefund: 0, isActive: true})
         this.investParams.ponctualInvests = [...this.investParams.ponctualInvests]
         break;
       case EnumInvestType.ponctualDrop:
-          this.investParams.ponctualDrops.unshift({percent: 0, index: 0})
+          this.investParams.ponctualDrops.unshift({amount: 0, index: 0, isActive: true})
           this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
           break;
       default:
@@ -134,7 +128,7 @@ export class EstimateComponent implements OnInit, DoCheck {
   }
 
   recalculate() {
-    this.currentCalcul.setParams(this.investParams, this.partialReinvest, this.displayPanel)
+    this.currentCalcul.setParams(this.investParams, this.displayPanel)
     this.currentCalcul.recalculate()
     this.currentCalcul.applyFilter()
     this.ngxArrayData = [...this.currentCalcul.ngxArrayData]
