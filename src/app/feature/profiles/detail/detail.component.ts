@@ -44,6 +44,7 @@ export class ProfilesDetailComponent implements OnInit {
     },
     myInvestisment: []
   }
+  profileObversable: any;
 
   @ViewChild('estimateComponent') estimateComponent?: EstimateComponent;
   currentInvestCalcul: any;
@@ -52,10 +53,14 @@ export class ProfilesDetailComponent implements OnInit {
 
   constructor(private firestore: FirestoreService, private route: ActivatedRoute) {
     this.currentInvestCalcul = new NgxChartInvestClass(this.profile.myInvestisment)
+    route.params.subscribe(params => {
+      this.initProfileSubscription()
+    })
   }
 
-  ngOnInit(): void {
-    this.firestore.getProfile(this.route.snapshot.params['pseudo']).subscribe((data) => {
+  initProfileSubscription() {
+    if (this.profileObversable) this.profileObversable.unsubscribe();
+    this.profileObversable = this.firestore.getProfile(this.route.snapshot.params['pseudo']).subscribe((data) => {
       this.profile = data
 
       // invest calcul
@@ -71,6 +76,8 @@ export class ProfilesDetailComponent implements OnInit {
       console.log(this.profile)
     })
   }
+
+  ngOnInit(): void { }
 
   setParamsFromEstimate(event: any) {
     this.firestore.updateEstimate({
