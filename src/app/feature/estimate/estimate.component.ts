@@ -4,7 +4,7 @@ import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { investTypeData } from '../../core/models/invest-type';
 import { oneYear } from 'src/app/core/models/year';
-import { NgxChartClass } from 'src/app/core/services/ngx-chart';
+import { NgxChartEstimateClass } from 'src/app/core/services/ngx-chart-estimate';
 
 @Component({
   selector: 'app-estimate',
@@ -67,7 +67,7 @@ export class EstimateComponent implements OnInit, DoCheck {
   currentCalcul: any;
 
   constructor() {
-    this.currentCalcul = new NgxChartClass(this.investParams, this.displayPanel)
+    this.currentCalcul = new NgxChartEstimateClass(this.investParams, this.displayPanel)
   }
 
   ngOnInit(): void {

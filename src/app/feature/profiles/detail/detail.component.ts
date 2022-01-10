@@ -1,14 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DocumentData } from 'rxfire/firestore/interfaces';
-import { Observable } from 'rxjs';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { EnumSortType, Investisment, Profile } from 'src/app/core/models/profile';
 import { Mounth, oneYear } from 'src/app/core/models/year';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
-import { NgxChartClass } from 'src/app/core/services/ngx-chart';
 import { NgxChartInvestClass } from 'src/app/core/services/ngx-chart-invest';
-import { NgxChartStatClass } from 'src/app/core/services/ngx-chart-stat';
 import { EstimateComponent } from '../../estimate/estimate.component';
 
 @Component({

@@ -3,7 +3,7 @@ import { GrowingPlant, NgxDataType } from "../models/ngx-chart";
 import { Mounth, oneYear } from "../models/year";
 import { NgxChartCore } from "./ngx-chart-core";
 
-export class NgxChartClass extends NgxChartCore {
+export class NgxChartEstimateClass extends NgxChartCore {
   // variables
   investParams: InvestParams;
   displayPanel: DisplayPanel;

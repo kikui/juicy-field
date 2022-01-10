@@ -3,7 +3,6 @@ import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { Investisment } from 'src/app/core/models/profile';
 import { oneYear } from 'src/app/core/models/year';
-import { NgxChartClass } from 'src/app/core/services/ngx-chart';
 
 @Component({
   selector: 'app-investisment',
