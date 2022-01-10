@@ -1,7 +1,7 @@
 <div class="container" style="margin-top: 70px;">
   <div class="d-flex justify-content-center">
     <ngx-charts-line-chart
-      [view]="[window().innerWidth, window().innerHeight -56 -21 -32 -48]"
+      [view]="[window().innerWidth, window().innerHeight < 500 ? 500 : window().innerHeight -56 -21 -32 -48]"
       [autoScale]="true"
       [legendPosition]="legendPosition"
       [legend]="legend"
