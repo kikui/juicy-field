@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { Investisment } from 'src/app/core/models/profile';
@@ -32,7 +32,7 @@ export class InvestismentComponent implements OnInit {
   xAxisLabel: string = 'Temps';
   yAxisLabel: string = 'Argent (€)';
 
-  constructor() {}
+  constructor() { }
 
   updateData() {
     this.submit.emit([...this.myInvestisment])
@@ -44,7 +44,7 @@ export class InvestismentComponent implements OnInit {
   }
 
   addEntrie() {
-    this.myInvestisment.unshift({year: 2022, mounth: oneYear[0].name, mounthInvest: 0, currentRent: 0, reinvest: 0, gain: 0})
+    this.myInvestisment.unshift({ year: 2022, mounth: oneYear[0].name, mounthInvest: 0, currentRent: 0, reinvest: 0, gain: 0 })
     this.myInvestisment = [...this.myInvestisment]
   }
 

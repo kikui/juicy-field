@@ -1,7 +1,6 @@
-import { InvestType, investTypeData } from "../models/invest-type";
-import { NgxChart, NgxChartSeries, NgxDataType, NgxDataTypeInvest, NgxDataTypeStat } from "../models/ngx-chart";
+import { InvestType } from "../models/invest-type";
+import { NgxDataTypeStat } from "../models/ngx-chart";
 import { Investisment } from "../models/profile";
-import { oneYear } from "../models/year";
 import { NgxChartCore } from "./ngx-chart-core";
 
 export class NgxChartStatClass extends NgxChartCore {
@@ -13,9 +12,10 @@ export class NgxChartStatClass extends NgxChartCore {
     super()
     this.myInvestisment = myInvestisment
     this.investType = investType
-    this.ngxArrayData = [
-      {name: "Rentabilité moyenne courante", series: []}
-    ]
+  }
+
+  override initNgxArray() {
+    this.ngxArrayData[NgxDataTypeStat.currentRentability] = { name: "Rentabilité moyenne courante", series: [] }
   }
 
   setParams(myInvestisment: Array<Investisment>, investType: InvestType) {

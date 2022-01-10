@@ -3,9 +3,13 @@ import { NgxChart, NgxChartSeries } from "../models/ngx-chart"
 import { oneYear } from "../models/year";
 
 export class NgxChartCore {
-  ngxArrayData: Array<NgxChart>;
+  ngxArrayData: Array<NgxChart> = [];
 
   constructor() {
+    this.initNgxArray()
+  }
+
+  initNgxArray() {
     this.ngxArrayData = []
   }
 

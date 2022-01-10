@@ -61,7 +61,7 @@ export class ProfilesDetailComponent implements OnInit {
       // invest calcul
       this.myInvestisment = [...this.profile.myInvestisment.sort((a: Investisment, b: Investisment) => this.sortMyInvestisment(a, b, EnumSortType.ASC))]
       this.myInvestismentGraph = [...this.currentInvestCalcul.recalculate(this.myInvestisment)]
-      
+
       // invest table order
       this.profile.myInvestisment.sort((a: Investisment, b: Investisment) => this.sortMyInvestisment(a, b, EnumSortType.DESC))
 
@@ -74,14 +74,14 @@ export class ProfilesDetailComponent implements OnInit {
 
   setParamsFromEstimate(event: any) {
     this.firestore.updateEstimate({
-      pseudo: this.profile.pseudo, 
+      pseudo: this.profile.pseudo,
       myEstimate: event
     })
   }
 
   setMyInvestisment(event: Array<Investisment>) {
     this.firestore.updateInvestisment({
-      pseudo: this.profile.pseudo, 
+      pseudo: this.profile.pseudo,
       myInvestisment: event
     })
   }
@@ -89,15 +89,15 @@ export class ProfilesDetailComponent implements OnInit {
   sortMyInvestisment(a: Investisment, b: Investisment, type: EnumSortType) {
     let aMounth = this.getMounth(a.mounth)
     let bMounth = this.getMounth(b.mounth)
-    if(type == EnumSortType.DESC) {
+    if (type == EnumSortType.DESC) {
       if (a.year == b.year) {
         return aMounth.position < bMounth.position ? 1 : -1
-      } 
+      }
       return a.year < b.year ? 1 : -1
     } else if (type == EnumSortType.ASC) {
       if (a.year == b.year) {
         return aMounth.position > bMounth.position ? 1 : -1
-      } 
+      }
       return a.year > b.year ? 1 : -1
     } else {
       return 0
@@ -106,7 +106,7 @@ export class ProfilesDetailComponent implements OnInit {
 
   getMounth(mounthName: string): Mounth {
     let mounthTarget = null
-    for(let i = 0; i < oneYear.length; i++) {
+    for (let i = 0; i < oneYear.length; i++) {
       if (oneYear[i].name == mounthName) mounthTarget = oneYear[i]
     }
     return mounthTarget!

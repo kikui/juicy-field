@@ -18,9 +18,9 @@ export class DialogProfilesCreate {
         investTypeId: "0",
         yearsGeneration: 1,
         plantRentabity: "68",
-        ponctualInvests: [{amount: 0, index: 0, indexRefund: 0, isActive: true}],
-        recurrentInvests: [{amount: 0, frequency: 0, startIndex: 0, isActive: true}],
-        ponctualDrops: [{index: 0, amount: 0, isActive: true}]
+        ponctualInvests: [{ amount: 0, index: 0, indexRefund: 0, isActive: true }],
+        recurrentInvests: [{ amount: 0, frequency: 0, startIndex: 0, isActive: true }],
+        ponctualDrops: [{ index: 0, amount: 0, isActive: true }]
       },
       displayPanel: {
         totalInvest: true,
@@ -33,9 +33,9 @@ export class DialogProfilesCreate {
         finalBenefit: true
       }
     },
-    myInvestisment: [{year: 2022, mounth: oneYear[0].name, mounthInvest: 0, currentRent: 0, reinvest: 0, gain: 0}]
+    myInvestisment: [{ year: 2022, mounth: oneYear[0].name, mounthInvest: 0, currentRent: 0, reinvest: 0, gain: 0 }]
   }
-  constructor(private firestoreService: FirestoreService, public dialogRef: MatDialogRef<DialogProfilesCreate>) {}
+  constructor(private firestoreService: FirestoreService, public dialogRef: MatDialogRef<DialogProfilesCreate>) { }
 
   createProfile() {
     if (this.profile.pseudo == "" && this.profile.name == "") return

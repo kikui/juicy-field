@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentData } from '@firebase/firestore';
 import { Profile } from 'src/app/core/models/profile';
@@ -14,7 +14,7 @@ export class ProfilesComponent implements OnInit {
   profiles: Array<Profile | DocumentData> = []
 
   constructor(public firestoreService: FirestoreService, public dialog: MatDialog) {
-    
+
   }
 
   ngOnInit(): void {

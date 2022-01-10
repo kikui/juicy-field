@@ -76,7 +76,7 @@ export class EstimateComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    if(this.currentInvestType.id != parseInt(this.investParams.investTypeId)) {
+    if (this.currentInvestType.id != parseInt(this.investParams.investTypeId)) {
       this.checkRecalculRevenu()
     }
   }
@@ -92,17 +92,17 @@ export class EstimateComponent implements OnInit, DoCheck {
   addEntrie(enumInvestType: EnumInvestType) {
     switch (enumInvestType) {
       case EnumInvestType.recurrentInvest:
-        this.investParams.recurrentInvests.unshift({amount: 0, frequency: 0, startIndex: 0, isActive: true})
+        this.investParams.recurrentInvests.unshift({ amount: 0, frequency: 0, startIndex: 0, isActive: true })
         this.investParams.recurrentInvests = [...this.investParams.recurrentInvests]
         break;
       case EnumInvestType.ponctualInvest:
-        this.investParams.ponctualInvests.unshift({amount: 0, index: 0, indexRefund: 0, isActive: true})
+        this.investParams.ponctualInvests.unshift({ amount: 0, index: 0, indexRefund: 0, isActive: true })
         this.investParams.ponctualInvests = [...this.investParams.ponctualInvests]
         break;
       case EnumInvestType.ponctualDrop:
-          this.investParams.ponctualDrops.unshift({amount: 0, index: 0, isActive: true})
-          this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
-          break;
+        this.investParams.ponctualDrops.unshift({ amount: 0, index: 0, isActive: true })
+        this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
+        break;
       default:
         break;
     }
@@ -119,9 +119,9 @@ export class EstimateComponent implements OnInit, DoCheck {
         this.investParams.ponctualInvests = [...this.investParams.ponctualInvests]
         break;
       case EnumInvestType.ponctualDrop:
-          this.investParams.ponctualDrops.splice(index, 1)
-          this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
-          break;
+        this.investParams.ponctualDrops.splice(index, 1)
+        this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
+        break;
       default:
         break;
     }
@@ -141,7 +141,7 @@ export class EstimateComponent implements OnInit, DoCheck {
 
   calculateRevenu(currentInvestType: InvestType) {
     this.arrayInvestTypeRevenu = []
-    for(let i = currentInvestType.revenue.minimal; i <= currentInvestType.revenue.maximal; i++) {
+    for (let i = currentInvestType.revenue.minimal; i <= currentInvestType.revenue.maximal; i++) {
       this.arrayInvestTypeRevenu.push(i)
     }
   }

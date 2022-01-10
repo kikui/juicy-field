@@ -1,5 +1,4 @@
-import { investTypeData } from "../models/invest-type";
-import { NgxChart, NgxChartSeries, NgxDataType, NgxDataTypeInvest } from "../models/ngx-chart";
+import { NgxDataTypeInvest } from "../models/ngx-chart";
 import { Investisment } from "../models/profile";
 import { NgxChartCore } from "./ngx-chart-core";
 
@@ -10,13 +9,14 @@ export class NgxChartInvestClass extends NgxChartCore {
   constructor(myInvestisment: Array<Investisment>) {
     super()
     this.myInvestisment = myInvestisment
-    this.ngxArrayData = [
-      { name: "Total investi", series: [] },
-      { name: "Total investi soi meme", series: [] },
-      { name: "Bénéfice", series: [] },
-      { name: "Investissement courant", series: [] },
-      { name: "Total retrait", series: [] },
-    ]
+  }
+
+  override initNgxArray() {
+    this.ngxArrayData[NgxDataTypeInvest.totalInvest] = { name: "Total investi", series: [] }
+    this.ngxArrayData[NgxDataTypeInvest.totalSelfInvest] = { name: "Total investi soi meme", series: [] }
+    this.ngxArrayData[NgxDataTypeInvest.benefit] = { name: "Bénéfice", series: [] }
+    this.ngxArrayData[NgxDataTypeInvest.currentInvest] = { name: "Investissement courant", series: [] }
+    this.ngxArrayData[NgxDataTypeInvest.totalDrop] = { name: "Total retrait", series: [] }
   }
 
   setParams(myInvestisment: Array<Investisment>) {
@@ -33,7 +33,7 @@ export class NgxChartInvestClass extends NgxChartCore {
   calculMyInvest() {
     let totalInvest = 0
     let totalSelfInvest = 0
-    let totalGain = 0
+    let totalDrop = 0
 
     this.myInvestisment.forEach((investisment: Investisment) => {
       let name = `${investisment.mounth} ${investisment.year}`
@@ -70,11 +70,11 @@ export class NgxChartInvestClass extends NgxChartCore {
       )
 
       // total gain
-      totalGain += investisment.gain
+      totalDrop += investisment.gain
       this.ngxArrayPush(
         name,
-        totalGain,
-        NgxDataTypeInvest.totalGain
+        totalDrop,
+        NgxDataTypeInvest.totalDrop
       )
     })
   }

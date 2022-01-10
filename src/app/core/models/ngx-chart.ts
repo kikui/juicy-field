@@ -19,7 +19,7 @@ export interface GrowingPlant {
   age: number;
 }
 
-export enum NgxDataType {
+export enum NgxDataTypeEstimate {
   totalInvest,
   totalSelfInvest,
   currentInvest,
@@ -29,7 +29,6 @@ export enum NgxDataType {
   drop,
   currentPlantPaid,
   totalPlantInGrowing,
-  benefitFinal
 }
 
 export enum NgxDataTypeInvest {
@@ -37,7 +36,7 @@ export enum NgxDataTypeInvest {
   totalSelfInvest,
   benefit,
   currentInvest,
-  totalGain,
+  totalDrop,
 }
 
 export enum NgxDataTypeStat {
