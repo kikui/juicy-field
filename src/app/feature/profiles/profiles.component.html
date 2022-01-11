@@ -1,7 +1,8 @@
 <navbar></navbar>
 
 <div class="container" style="padding-top: 57px; height: 100%;">
-  <div class="row justify-content-center align-items-center profile-container">
+  <div class="row justify-content-center profile-container">
+    <div class="col-12 profile-title">Qui investit ?</div>
     <div class="col-12 col-md-4 col-lg-3" *ngFor="let profile of profiles" routerLink="/profile/{{profile.pseudo}}" [state]="{profile: profile}">
       <div class="card cursor-pointer">
         <div class="card-body">
