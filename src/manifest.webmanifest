@@ -1,9 +1,9 @@
 {
   "name": "Juicy Field Estimate",
   "short_name": "JS Estimate",
-  "theme_color": "#1976d2",
+  "theme_color": "#404141",
   "background_color": "#fafafa",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "./",
   "start_url": "./",
   "icons": [
