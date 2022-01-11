@@ -3,7 +3,7 @@
   "short_name": "JS Estimate",
   "theme_color": "#404141",
   "background_color": "#fafafa",
-  "display": "fullscreen",
+  "display": "standalone",
   "scope": "./",
   "start_url": "./",
   "icons": [
