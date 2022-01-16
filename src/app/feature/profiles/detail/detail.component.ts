@@ -14,36 +14,7 @@ import { EstimateComponent } from '../../estimate/estimate.component';
   styleUrls: ['./detail.component.scss']
 })
 export class ProfilesDetailComponent implements OnInit {
-  profile: Profile | DocumentData = {
-    pseudo: "",
-    name: "",
-    myEstimate: {
-      investParams: {
-        investLoanning: 0,
-        loanningTimeRefund: 0,
-        investStarter: 0,
-        investByMounth: 50,
-        investTypeId: "0",
-        yearsGeneration: 1,
-        ponctualInvest: ""
-      },
-      partialReinvest: {
-        percent: 100,
-        maxRentDrop: 0,
-        minimalTimeBeforeDrop: 0,
-        frequency: 1
-      },
-      displayPanel: {
-        totalInvest: true,
-        realBenefit: false,
-        currentPlantPaid: true,
-        totalPlantInGrowing: false,
-        currentRent: false,
-        totalSelfInvest: true
-      }
-    },
-    myInvestisment: []
-  }
+  profile: Profile | DocumentData = {}
   profileObversable: any;
 
   @ViewChild('estimateComponent') estimateComponent?: EstimateComponent;
@@ -118,20 +89,5 @@ export class ProfilesDetailComponent implements OnInit {
     }
     return mounthTarget!
   }
-
-  /* 
-    Tabs : 
-  - Mon investissement
-    - tableau d'input
-      - mounthInvest
-      - rentMounth
-      - Reinvest (hors mounthInvest)
-      - gain
-    - graph relatif aux datax du tableau
-      - totalInvest
-      - currentInvest (avec mounthInvest)
-      - totalSelfInvest
-  - Mes statistiques
-  */
 
 }

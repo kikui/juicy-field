@@ -22,7 +22,8 @@ export class EstimateComponent implements OnInit, DoCheck {
     plantRentabity: "68",
     ponctualInvests: [],
     recurrentInvests: [],
-    ponctualDrops: []
+    ponctualDrops: [],
+    recurrentDrops: []
   }
   @Input() displayPanel: DisplayPanel = {
     totalInvest: true,
@@ -41,7 +42,7 @@ export class EstimateComponent implements OnInit, DoCheck {
   // table params
   recurrentInvestDisplayedColumns = ["amount", "frequency", "startIndex", "isActive", "action"]
   ponctualInvestDisplayedColumns = ["amount", "index", "indexRefund", "isActive", "action"]
-  ponctualDropDisplayedColumns = ["percent", "index", "isActive", "action"]
+  ponctualDropDisplayedColumns = ["amount", "index", "isActive", "action"]
 
   // Enum && Data declaration
   investTypeData = investTypeData
@@ -103,6 +104,10 @@ export class EstimateComponent implements OnInit, DoCheck {
         this.investParams.ponctualDrops.unshift({ amount: 0, index: 0, isActive: true })
         this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
         break;
+      case EnumInvestType.recurrentDrops:
+        this.investParams.recurrentDrops.unshift({ amount: 0, frequency: 0, startIndex: 0, isActive: true })
+        this.investParams.recurrentDrops = [...this.investParams.recurrentDrops]
+        break;
       default:
         break;
     }
@@ -122,12 +127,17 @@ export class EstimateComponent implements OnInit, DoCheck {
         this.investParams.ponctualDrops.splice(index, 1)
         this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
         break;
+      case EnumInvestType.recurrentDrops:
+        this.investParams.recurrentDrops.splice(index, 1)
+        this.investParams.recurrentDrops = [...this.investParams.recurrentDrops]
+        break;
       default:
         break;
     }
   }
 
   recalculate() {
+    this.checkDataPresence()
     this.currentCalcul.setParams(this.investParams, this.displayPanel)
     this.currentCalcul.recalculate()
     this.currentCalcul.applyFilter()
@@ -149,6 +159,21 @@ export class EstimateComponent implements OnInit, DoCheck {
   checkRecalculRevenu() {
     this.currentInvestType = this.currentCalcul.getInvestTypeData(parseInt(this.investParams.investTypeId))
     this.calculateRevenu(this.currentInvestType)
+  }
+
+  checkDataPresence() {
+    if(!this.investParams.recurrentDrops || this.investParams.recurrentDrops.length == 0) {
+      this.investParams.recurrentDrops  =  [{ amount: 0, frequency: 0, startIndex: 0, isActive: true }]
+    }
+    if(!this.investParams.recurrentInvests || this.investParams.recurrentInvests.length == 0) {
+      this.investParams.recurrentInvests  =  [{ amount: 0, frequency: 0, startIndex: 0, isActive: true }]
+    }
+    if(!this.investParams.ponctualDrops || this.investParams.ponctualDrops.length == 0) {
+      this.investParams.ponctualDrops  =  [{ amount: 0, index: 0, isActive: true }]
+    }
+    if(!this.investParams.ponctualInvests || this.investParams.ponctualInvests.length == 0) {
+      this.investParams.ponctualInvests  =  [{ amount: 0, index: 0, indexRefund: 0, isActive: true }]
+    }
   }
 
 }

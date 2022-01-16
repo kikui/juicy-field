@@ -1,4 +1,4 @@
-import { DisplayPanel, InvestParams, InvestType, investTypeData, PonctualDrop, PonctualInvest, RecurrentInvest } from "../models/invest-type";
+import { DisplayPanel, InvestParams, InvestType, investTypeData, PonctualDrop, PonctualInvest, RecurrentDrop, RecurrentInvest } from "../models/invest-type";
 import { GrowingPlant, NgxDataTypeEstimate } from "../models/ngx-chart";
 import { Mounth, oneYear } from "../models/year";
 import { NgxChartCore } from "./ngx-chart-core";
@@ -230,6 +230,13 @@ export class NgxChartEstimateClass extends NgxChartCore {
       if (ponctualDrop.index == index && index > 0) {
         drop += ponctualDrop.amount * (1 + this.taxe)
       }
+    })
+    this.investParams.recurrentDrops.forEach((recurrentDrop: RecurrentDrop) => {
+      if (index < recurrentDrop.startIndex) return
+      if (!recurrentDrop.isActive) return
+      let exactIndex = index - recurrentDrop.startIndex
+      if (exactIndex % recurrentDrop.frequency != 0) return
+      drop += recurrentDrop.amount * (1 + this.taxe)
     })
     reinvest -= drop
     return { reinvest: reinvest, drop: drop }

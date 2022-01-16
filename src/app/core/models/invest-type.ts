@@ -20,6 +20,14 @@ export interface InvestParams {
   ponctualInvests: Array<PonctualInvest>;
   recurrentInvests: Array<RecurrentInvest>;
   ponctualDrops: Array<PonctualDrop>
+  recurrentDrops: Array<RecurrentDrop>
+}
+
+export interface RecurrentDrop {
+  startIndex: number;
+  amount: number;
+  frequency: number;
+  isActive: boolean;
 }
 
 export interface PonctualDrop {
@@ -45,6 +53,7 @@ export interface PonctualInvest {
 export enum EnumInvestType {
   recurrentInvest,
   ponctualInvest,
+  recurrentDrops,
   ponctualDrop
 }
 
