@@ -19,9 +19,9 @@ export class DialogProfilesCreate {
         yearsGeneration: 1,
         plantRentabity: "68",
         ponctualInvests: [{ amount: 0, index: 0, indexRefund: 0, isActive: true }],
-        recurrentInvests: [{ amount: 0, frequency: 0, startIndex: 0, isActive: true }],
+        recurrentInvests: [{ amount: 0, frequency: 0, startIndex: 0, endIndex: 0, isActive: true }],
         ponctualDrops: [{ index: 0, amount: 0, isActive: false }],
-        recurrentDrops: [{ amount: 0, frequency: 0, startIndex: 0, isActive: false }]
+        recurrentDrops: [{ amount: 0, frequency: 0, startIndex: 0, endIndex: 0, isActive: false }]
       },
       displayPanel: {
         totalInvest: true,

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, Output, EventEmitter, DoCheck } from '@angular/core';
-import { DisplayPanel, EnumInvestType, InvestParams, InvestType } from 'src/app/core/models/invest-type';
+import { DisplayPanel, EnumInvestType, InvestParams, InvestType, RecurrentDrop } from 'src/app/core/models/invest-type';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChart } from 'src/app/core/models/ngx-chart';
 import { investTypeData } from '../../core/models/invest-type';
@@ -40,7 +40,7 @@ export class EstimateComponent implements OnInit, DoCheck {
   arrayInvestTypeRevenu: Array<number> = []
 
   // table params
-  recurrentInvestDisplayedColumns = ["amount", "frequency", "startIndex", "isActive", "action"]
+  recurrentInvestDisplayedColumns = ["amount", "frequency", "startIndex", "endIndex", "isActive", "action"]
   ponctualInvestDisplayedColumns = ["amount", "index", "indexRefund", "isActive", "action"]
   ponctualDropDisplayedColumns = ["amount", "index", "isActive", "action"]
 
@@ -93,7 +93,7 @@ export class EstimateComponent implements OnInit, DoCheck {
   addEntrie(enumInvestType: EnumInvestType) {
     switch (enumInvestType) {
       case EnumInvestType.recurrentInvest:
-        this.investParams.recurrentInvests.unshift({ amount: 0, frequency: 0, startIndex: 0, isActive: true })
+        this.investParams.recurrentInvests.unshift({ amount: 0, frequency: 0, startIndex: 0, endIndex: 0, isActive: true })
         this.investParams.recurrentInvests = [...this.investParams.recurrentInvests]
         break;
       case EnumInvestType.ponctualInvest:
@@ -105,7 +105,7 @@ export class EstimateComponent implements OnInit, DoCheck {
         this.investParams.ponctualDrops = [...this.investParams.ponctualDrops]
         break;
       case EnumInvestType.recurrentDrops:
-        this.investParams.recurrentDrops.unshift({ amount: 0, frequency: 0, startIndex: 0, isActive: true })
+        this.investParams.recurrentDrops.unshift({ amount: 0, frequency: 0, startIndex: 0, endIndex: 0, isActive: true })
         this.investParams.recurrentDrops = [...this.investParams.recurrentDrops]
         break;
       default:
@@ -162,18 +162,18 @@ export class EstimateComponent implements OnInit, DoCheck {
   }
 
   checkDataPresence() {
+    // global params present
     if(!this.investParams.recurrentDrops || this.investParams.recurrentDrops.length == 0) {
-      this.investParams.recurrentDrops  =  [{ amount: 0, frequency: 0, startIndex: 0, isActive: true }]
+      this.investParams.recurrentDrops  =  [{ amount: 0, frequency: 0, startIndex: 0, endIndex: 0, isActive: true }]
     }
-    if(!this.investParams.recurrentInvests || this.investParams.recurrentInvests.length == 0) {
-      this.investParams.recurrentInvests  =  [{ amount: 0, frequency: 0, startIndex: 0, isActive: true }]
-    }
-    if(!this.investParams.ponctualDrops || this.investParams.ponctualDrops.length == 0) {
-      this.investParams.ponctualDrops  =  [{ amount: 0, index: 0, isActive: true }]
-    }
-    if(!this.investParams.ponctualInvests || this.investParams.ponctualInvests.length == 0) {
-      this.investParams.ponctualInvests  =  [{ amount: 0, index: 0, indexRefund: 0, isActive: true }]
-    }
+
+    // iter params present
+    this.investParams.recurrentDrops.forEach((recurrentDrop: RecurrentDrop) => {
+      if(!recurrentDrop.endIndex) recurrentDrop.endIndex = 0
+    })
+    this.investParams.recurrentInvests.forEach((recurrentInvests: RecurrentDrop) => {
+      if(!recurrentInvests.endIndex) recurrentInvests.endIndex = 0
+    })
   }
 
 }

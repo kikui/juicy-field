@@ -25,6 +25,7 @@ export interface InvestParams {
 
 export interface RecurrentDrop {
   startIndex: number;
+  endIndex: number;
   amount: number;
   frequency: number;
   isActive: boolean;
@@ -38,6 +39,7 @@ export interface PonctualDrop {
 
 export interface RecurrentInvest {
   startIndex: number;
+  endIndex: number;
   amount: number;
   frequency: number;
   isActive: boolean;

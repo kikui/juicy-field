@@ -30,6 +30,17 @@
             </mat-form-field>
           </td>
         </ng-container>
+        <ng-container matColumnDef="endIndex">
+          <th mat-header-cell *matHeaderCellDef>
+            <div>Index de fin de l'occurence</div>
+            <div>(0 = infini)</div>
+          </th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <mat-form-field>
+              <input matInput type="number" [(ngModel)]="investParams.recurrentInvests[i].endIndex"/>
+            </mat-form-field>
+          </td>
+        </ng-container>
         <ng-container matColumnDef="isActive">
           <th mat-header-cell *matHeaderCellDef>Activé ?</th>
           <td mat-cell *matCellDef="let element; let i = index">
@@ -136,6 +147,17 @@
           <td mat-cell *matCellDef="let element; let i = index">
             <mat-form-field>
               <input matInput type="number" [(ngModel)]="investParams.recurrentDrops[i].startIndex"/>
+            </mat-form-field>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="endIndex">
+          <th mat-header-cell *matHeaderCellDef>
+            <div>Index de fin de l'occurence</div>
+            <div>(0 = infini)</div>
+          </th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <mat-form-field>
+              <input matInput type="number" [(ngModel)]="investParams.recurrentDrops[i].endIndex"/>
             </mat-form-field>
           </td>
         </ng-container>

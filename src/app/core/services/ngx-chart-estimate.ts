@@ -153,6 +153,7 @@ export class NgxChartEstimateClass extends NgxChartCore {
     this.investParams.recurrentInvests.forEach((rencurrentInvest: RecurrentInvest) => {
       if (index < rencurrentInvest.startIndex) return
       if (!rencurrentInvest.isActive) return
+      if (index > rencurrentInvest.endIndex && rencurrentInvest.endIndex != 0) return
       let exactIndex = index - rencurrentInvest.startIndex
       if (exactIndex % rencurrentInvest.frequency != 0) return
       totalReinvest += rencurrentInvest.amount
@@ -234,6 +235,7 @@ export class NgxChartEstimateClass extends NgxChartCore {
     this.investParams.recurrentDrops.forEach((recurrentDrop: RecurrentDrop) => {
       if (index < recurrentDrop.startIndex) return
       if (!recurrentDrop.isActive) return
+      if (index > recurrentDrop.endIndex && recurrentDrop.endIndex != 0) return
       let exactIndex = index - recurrentDrop.startIndex
       if (exactIndex % recurrentDrop.frequency != 0) return
       drop += recurrentDrop.amount * (1 + this.taxe)
